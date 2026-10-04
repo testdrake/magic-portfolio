@@ -1,5 +1,22 @@
-export type TikTokVideo = { url: string; caption?: string; thumbnail?: string; publishedAt?: string; views?: string; likes?: string; comments?: string; shares?: string };
-export type TikTokData = { available: boolean; followers?: string; following?: string; likes?: string; latestVideo?: TikTokVideo; updatedAt?: string };
+export type TikTokProfile = { username: string; displayName?: string };
+export type TikTokVideo = {
+  shareUrl?: string;
+  description?: string;
+  coverImageUrl?: string;
+  publishedAt?: string;
+  viewCount?: number;
+  likeCount?: number;
+  commentCount?: number;
+};
+export type TikTokData = {
+  available: boolean;
+  profile?: TikTokProfile;
+  latestVideo?: TikTokVideo;
+  followers?: number;
+  following?: number;
+  likes?: number;
+  updatedAt?: string;
+};
 
 export async function getTikTokData(): Promise<TikTokData> {
   const source = process.env.TIKTOK_STATS_JSON;

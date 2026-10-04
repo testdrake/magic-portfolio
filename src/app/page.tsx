@@ -1,10 +1,6 @@
-import { Button, Column, Heading, Line, Media, Meta, Row, Schema, Text } from "@once-ui-system/core";
+import { Button, Column, Heading, Line, Media, Row, Schema, Text } from "@once-ui-system/core";
 import { baseURL, home, person, social } from "@/resources";
-import { getTikTokData } from "@/lib/tiktok/getData";
-
-export async function generateMetadata() {
-  return Meta.generate({ title: home.title, description: home.description, baseURL, path: home.path, image: home.image });
-}
+import { getTikTokData } from "@/utils/tiktok";
 
 const tiktokUrl = "https://www.tiktok.com/@sheluvsdrak3";
 const youtubeUrl = "https://www.youtube.com/channel/@sheluvsdrak3";
@@ -56,8 +52,6 @@ export default async function Home() {
     </Column>
   );
 }
-
-export type { TikTokData } from "@/lib/tiktok/types";
 
 export const revalidate = 300;
 
