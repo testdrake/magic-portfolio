@@ -2,15 +2,15 @@ import { About, Blog, Gallery, Home, Newsletter, Person, Social, Work } from "@/
 import { Line, Row, Text } from "@once-ui-system/core";
 
 const person: Person = {
-  firstName: "Selene",
-  lastName: "Yu",
-  name: `Selene Yu`,
-  role: "Design Engineer",
+  firstName: "DrakeShi🍃",
+  lastName: "McMahan",
+  name: `DrakeShi🍃`,
+  role: "Digital Content Creator & Videographer",
   avatar: "/images/avatar.jpg",
-  email: "example@gmail.com",
-  location: "Asia/Jakarta", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
-  languages: ["English", "Bahasa"], // optional: Leave the array empty if you don't want to display languages
-  locale: "en", // BCP 47 language tag for the HTML lang attribute, e.g., 'en', 'ja', 'zh-TW'
+  email: "",
+  location: "America/Los_Angeles",
+  languages: ["English"],
+  locale: "en",
 };
 
 const newsletter: Newsletter = {
@@ -20,66 +20,32 @@ const newsletter: Newsletter = {
 };
 
 const social: Social = [
-  // Links are automatically displayed.
-  // Import new icons in /once-ui/icons.ts
-  // Set essentials: true for links you want to show on the about page
-  {
-    name: "GitHub",
-    icon: "github",
-    link: "https://github.com/once-ui-system",
-    essential: true,
-  },
-  {
-    name: "LinkedIn",
-    icon: "linkedin",
-    link: "https://www.linkedin.com/company/once-ui/",
-    essential: true,
-  },
-  {
-    name: "Instagram",
-    icon: "instagram",
-    link: "https://www.instagram.com/once_ui/",
-    essential: false,
-  },
-  {
-    name: "Threads",
-    icon: "threads",
-    link: "https://www.threads.com/@once_ui",
-    essential: true,
-  },
-  {
-    name: "Email",
-    icon: "email",
-    link: `mailto:${person.email}`,
-    essential: true,
-  },
+  { name: "TikTok", icon: "play", link: "https://www.tiktok.com/@sheluvsdrak3", essential: true },
+  { name: "YouTube", icon: "play", link: "https://www.youtube.com/channel/@sheluvsdrak3", essential: true },
+  { name: "Instagram", icon: "instagram", link: "https://www.instagram.com/sheluvsdrak3/", essential: true },
+  { name: "Google Creator Profile", icon: "globe", link: "https://profile.google.com/@sheluvsdrak3", essential: false },
 ];
 
 const home: Home = {
   path: "/",
   image: "/images/og/home.jpg",
   label: "Home",
-  title: `${person.name}'s Portfolio`,
-  description: `Portfolio website showcasing my work as a ${person.role}`,
-  headline: <>Building bridges between design and code</>,
+  title: "DrakeShi🍃 — Official Creator Portfolio",
+  description: "The official home of DrakeShi🍃, a TikTok creator and videographer making relatable, entertaining short-form content.",
+  headline: <>Real life. Real laughs. <Text as="span" onBackground="brand-strong">DrakeShi🍃.</Text></>,
   featured: {
     display: true,
     title: (
       <Row gap="12" vertical="center">
-        <strong className="ml-4">Once UI</strong>{" "}
+        <strong>Featured content</strong>
         <Line background="brand-alpha-strong" vert height="20" />
-        <Text marginRight="4" onBackground="brand-medium">
-          Featured work
-        </Text>
+        <Text marginRight="4" onBackground="brand-medium">Watch the latest</Text>
       </Row>
     ),
-    href: "/work/building-once-ui-a-customizable-design-system",
+    href: "/work",
   },
   subline: (
-    <>
-      I'm {person.firstName}, a {person.role.toLowerCase()} at{" "}
-      <Text as="span" size="xl" weight="strong">ONCE UI</Text>, where I craft intuitive <br /> user experiences. After hours, I build my own projects.
-    </>
+    <>Digital content creator and videographer making relatable, personality-driven short-form content that feels like a conversation with your funniest friend.</>
   ),
 };
 
@@ -245,9 +211,9 @@ const blog: Blog = {
 
 const work: Work = {
   path: "/work",
-  label: "Work",
-  title: `Projects – ${person.name}`,
-  description: `Design and dev projects by ${person.name}`,
+  label: "Featured",
+  title: `Featured Content – ${person.name}`,
+  description: `Featured videos and media from ${person.name}`,
   // Create new project pages by adding a new .mdx file to app/blog/posts
   // All projects will be listed on the /home and /work routes
 };
@@ -255,8 +221,8 @@ const work: Work = {
 const gallery: Gallery = {
   path: "/gallery",
   label: "Gallery",
-  title: `Photo gallery – ${person.name}`,
-  description: `A photo collection by ${person.name}`,
+  title: `Gallery – ${person.name}`,
+  description: `A visual gallery from ${person.name}, digital creator and videographer`,
   // Images by https://lorant.one
   // These are placeholder images, replace with your own
   images: [
