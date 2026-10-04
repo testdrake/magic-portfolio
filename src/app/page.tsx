@@ -1,25 +1,64 @@
-import { Badge, Button, Column, Heading, Line, Media, Meta, Row, Schema, Text } from "@once-ui-system/core";
-import { about, baseURL, home, person, social } from "@/resources";
-import { getTikTokData } from "@/utils/tiktok";
+import { Button, Column, Heading, Line, Media, Meta, Row, Schema, Text } from "@once-ui-system/core";
+import { baseURL, home, person, social } from "@/resources";
+import { getTikTokData } from "@/lib/tiktok/getData";
 
-export async function generateMetadata() { return Meta.generate({ title: home.title, description: home.description, baseURL, path: home.path, image: home.image }); }
+export async function generateMetadata() {
+  return Meta.generate({ title: home.title, description: home.description, baseURL, path: home.path, image: home.image });
+}
+
+const tiktokUrl = "https://www.tiktok.com/@sheluvsdrak3";
+const youtubeUrl = "https://www.youtube.com/channel/@sheluvsdrak3";
 
 export default async function Home() {
   const tiktok = await getTikTokData();
-  return <Column maxWidth="l" gap="xl" paddingY="12" horizontal="center" fillWidth>
-    <Schema as="webPage" baseURL={baseURL} path="/" title={home.title} description={home.description} image={`${baseURL}${person.avatar}`} author={{ name: "Drake McMahan", url: `${baseURL}/about`, image: `${baseURL}${person.avatar}` }} />
-    <Column fillWidth gap="l" paddingY="xl">
-      <Badge background="brand-alpha-weak" onBackground="brand-strong" paddingX="12" paddingY="4" arrow={false}>@sheluvsdrak3</Badge>
-      <Row fillWidth gap="xl" s={{ direction: "column" }}>
-        <Column flex={6} gap="l" vertical="center"><Heading variant="display-strong-xl" wrap="balance">{home.headline}</Heading><Text variant="heading-default-xl" onBackground="neutral-weak">Digital Content Creator &amp; Videographer</Text><Text variant="body-default-l" onBackground="neutral-weak">Creating relatable, entertaining short-form content built around humor, personality, and everyday moments.</Text><Row gap="12" wrap><Button href="https://www.tiktok.com/@sheluvsdrak3" variant="primary" size="l" arrowIcon>Follow on TikTok</Button><Button href="https://www.youtube.com/channel/@sheluvsdrak3" variant="secondary" size="l" arrowIcon>Watch on YouTube</Button></Row></Column>
-        <Column flex={5} fillWidth minHeight={480} radius="xl" overflow="hidden" background="brand-alpha-weak" border="brand-alpha-medium"><Media src={person.avatar} alt="DrakeShi🍃, digital content creator and videographer" fill sizes="(max-width: 768px) 100vw, 42vw" /></Column>
-      </Row>
+  const video = tiktok.latestVideo;
+
+  return (
+    <Column as="main" fillWidth horizontal="center">
+      <Schema as="webPage" baseURL={baseURL} path="/" title={home.title} description={home.description} image={`${baseURL}${person.avatar}`} author={{ name: "Drake McMahan", url: `${baseURL}/about`, image: `${baseURL}${person.avatar}` }} />
+      <Column maxWidth="m" fillWidth paddingX="l" gap="xl" paddingY="l">
+        <Row fillWidth gap="xl" vertical="center" s={{ direction: "column", gap: "l" }}>
+          <Column flex={1} gap="m">
+            <Text variant="label-default-s" onBackground="brand-strong">@sheluvsdrak3</Text>
+            <Heading variant="display-strong-xl" wrap="balance">DrakeShi🍃</Heading>
+            <Text variant="heading-default-l" onBackground="neutral-weak">Digital Content Creator & Videographer</Text>
+            <Text variant="body-default-l" onBackground="neutral-weak" wrap="balance">Relatable short-form content built around humor, personality, and everyday moments.</Text>
+            <Row gap="12" wrap>
+              <Button href={tiktokUrl} variant="primary" arrowIcon>TikTok</Button>
+              <Button href={youtubeUrl} variant="secondary" arrowIcon>YouTube</Button>
+            </Row>
+          </Column>
+          <Column flex={1} fillWidth aspectRatio="1/1" maxHeight={420} radius="xl" overflow="hidden" background="brand-alpha-weak">
+            <Media src={person.avatar} alt="DrakeShi, digital content creator and videographer" fill sizes="(max-width: 768px) 100vw, 42vw" />
+          </Column>
+        </Row>
+
+        <Row fillWidth border="neutral-alpha-medium" borderStyle="solid" borderWidth="1" radius="l" padding="m" gap="l" wrap s={{ direction: "column", gap: "m" }}>
+          {tiktok.profile ? <>
+            <Column flex={1}><Text variant="label-default-s" onBackground="neutral-weak">TIKTOK</Text><Text variant="heading-strong-m">@{tiktok.profile.username}</Text></Column>
+            <Column flex={1}><Text variant="label-default-s" onBackground="neutral-weak">PROFILE</Text><Text variant="heading-strong-m">{tiktok.profile.displayName}</Text></Column>
+          </> : <Column fillWidth><Text variant="heading-strong-m">TikTok</Text><Text onBackground="neutral-weak">@sheluvsdrak3</Text></Column>}
+          {video?.viewCount !== undefined && <Column flex={1}><Text variant="label-default-s" onBackground="neutral-weak">VIEWS</Text><Text variant="heading-strong-m">{video.viewCount.toLocaleString()}</Text></Column>}
+        </Row>
+
+        <Column fillWidth gap="m">
+          <Column gap="8"><Text variant="label-default-s" onBackground="brand-strong">LATEST ON TIKTOK</Text><Heading as="h2" variant="display-strong-m">Latest on TikTok</Heading></Column>
+          {video ? <Row fillWidth gap="l" background="neutral-alpha-weak" radius="l" padding="l" s={{ direction: "column", gap: "m" }}>
+            <Column flex={1} aspectRatio="16/9" radius="m" overflow="hidden" background="page"><Media src={video.coverImageUrl ?? person.avatar} alt={video.description ?? "Latest DrakeShi TikTok"} fill sizes="(max-width: 768px) 100vw, 45vw" /></Column>
+            <Column flex={1} gap="m" vertical="center"><Text variant="body-default-l">{video.description ?? "Latest DrakeShi video"}</Text><Text onBackground="neutral-weak">{[video.viewCount !== undefined && `${video.viewCount.toLocaleString()} views`, video.likeCount !== undefined && `${video.likeCount.toLocaleString()} likes`, video.commentCount !== undefined && `${video.commentCount.toLocaleString()} comments`].filter(Boolean).join(" • ")}</Text><Button href={video.shareUrl ?? tiktokUrl} variant="primary" arrowIcon>Watch on TikTok</Button></Column>
+          </Row> : <Column fillWidth gap="m" background="neutral-alpha-weak" radius="l" padding="l"><Text variant="body-default-l" onBackground="neutral-weak">Follow @sheluvsdrak3 on TikTok for the latest videos.</Text><Button href={tiktokUrl} variant="primary" arrowIcon>Open TikTok</Button></Column>}
+        </Column>
+
+        <Column fillWidth gap="m"><Line /><Text variant="label-default-s" onBackground="brand-strong">FEATURED CONTENT</Text><Heading as="h2" variant="display-strong-m">DrakeShi on TikTok</Heading><Text variant="body-default-l" onBackground="neutral-weak">A look at DrakeShi's short-form content and creator presence on TikTok.</Text><Row><Button href={tiktokUrl} variant="secondary" arrowIcon>View on TikTok</Button></Row></Column>
+
+        <Row fillWidth horizontal="between" vertical="center" paddingY="m" s={{ direction: "column", align: "start", gap: "m" }}><Text variant="body-default-s" onBackground="neutral-weak">DrakeShi🍃 · @sheluvsdrak3</Text><Row gap="8" wrap>{social.filter((item) => ["TikTok", "YouTube", "Instagram"].includes(item.name)).map((item) => item.link && <Button key={item.name} href={item.link} variant="tertiary" size="s">{item.name}</Button>)}</Row></Row>
+      </Column>
     </Column>
-    <Row fillWidth background="neutral-alpha-weak" border="neutral-alpha-weak" radius="l" padding="l" gap="l" wrap><Column flex={1} minWidth={180}><Text variant="label-default-s" onBackground="neutral-weak">THE PLATFORM</Text><Heading as="h2" variant="heading-strong-l">TikTok</Heading><Text onBackground="neutral-weak">@sheluvsdrak3</Text></Column><Column flex={1} minWidth={180}><Text variant="label-default-s" onBackground="neutral-weak">THE FORMAT</Text><Heading as="h2" variant="heading-strong-l">Short-form</Heading><Text onBackground="neutral-weak">Relatable entertainment</Text></Column><Column flex={1} minWidth={180}><Text variant="label-default-s" onBackground="neutral-weak">THE ENERGY</Text><Heading as="h2" variant="heading-strong-l">Personality</Heading><Text onBackground="neutral-weak">Humor in everyday moments</Text></Column></Row>
-    <Column fillWidth gap="m" paddingTop="xl"><Row fillWidth horizontal="between" vertical="end" s={{ direction: "column", align: "start" }} gap="m"><Column gap="8"><Text variant="label-default-s" onBackground="brand-strong">LATEST ON TIKTOK</Text><Heading as="h2" variant="display-strong-m">Made for your For You page.</Heading></Column><Text variant="body-default-s" onBackground="neutral-weak">{tiktok.updatedAt ? `Updated ${tiktok.updatedAt}` : "Live data is configured server-side"}</Text></Row><Row fillWidth gap="l" s={{ direction: "column" }} background="neutral-alpha-weak" radius="l" padding="l">{tiktok.available && tiktok.latestVideo ? <><Column flex={5} minHeight={300} background="page" radius="m" overflow="hidden"><Media src={tiktok.latestVideo.thumbnail ?? person.avatar} alt={tiktok.latestVideo.caption ?? "Latest DrakeShi TikTok"} fill sizes="(max-width: 768px) 100vw, 40vw" /></Column><Column flex={5} gap="m" vertical="center"><Heading as="h3" variant="heading-strong-l">{tiktok.latestVideo.caption ?? "Latest DrakeShi video"}</Heading><Button href={tiktok.latestVideo.url} variant="primary" arrowIcon>Watch on TikTok</Button></Column></> : <Column gap="m" paddingY="l"><Heading as="h3" variant="heading-strong-l">The latest is always on TikTok.</Heading><Text variant="body-default-l" onBackground="neutral-weak">Live video data is not connected yet. Visit the official profile for the newest DrakeShi🍃 content.</Text><Button href="https://www.tiktok.com/@sheluvsdrak3" variant="primary" arrowIcon>Open TikTok profile</Button></Column>}</Row></Column>
-    <Column fillWidth gap="l" paddingTop="xl"><Line /><Row fillWidth gap="xl" s={{ direction: "column" }}><Column flex={4} gap="m"><Text variant="label-default-s" onBackground="brand-strong">FEATURED CONTENT</Text><Heading as="h2" variant="display-strong-m">DrakeShi on TikTok</Heading><Text variant="body-default-l" onBackground="neutral-weak">A look at DrakeShi&apos;s short-form content, creator style, and growing presence on TikTok.</Text><Button href="/work" variant="tertiary" arrowIcon>Explore featured content</Button></Column><Column flex={6} minHeight={280} radius="l" overflow="hidden"><Media src="/images/projects/project-01/cover-01.jpg" alt="Featured DrakeShi creator content" fill sizes="(max-width: 768px) 100vw, 50vw" /></Column></Row></Column>
-    <Column fillWidth gap="m" paddingTop="xl" paddingBottom="l"><Line /><Row fillWidth horizontal="between" vertical="center" s={{ direction: "column", align: "start" }} gap="m"><Heading as="h2" variant="display-strong-s">Follow the next chapter.</Heading><Row gap="8" wrap>{social.map((item) => item.link && <Button key={item.name} href={item.link} variant="secondary" size="s">{item.name}</Button>)}</Row></Row></Column>
-  </Column>;
+  );
 }
 
-export type { TikTokData } from "@/utils/tiktok";
+export type { TikTokData } from "@/lib/tiktok/types";
+
+export const revalidate = 300;
+
+export const metadata = { title: home.title, description: home.description };
