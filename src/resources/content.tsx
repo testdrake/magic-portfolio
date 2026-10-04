@@ -6,7 +6,7 @@ const person: Person = {
   lastName: "McMahan",
   name: "DrakeShi🍃",
   role: "Digital Content Creator & Videographer",
-  avatar: "/images/avatar.jpg",
+  avatar: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/avatar-cpfor0C64t6Asd93wOF8jfdyExd36g.jpg",
   email: "",
   location: "America/Los_Angeles",
   languages: ["English"],
