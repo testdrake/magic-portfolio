@@ -1,37 +1,6 @@
-import { Column, Heading, Meta, Schema } from "@once-ui-system/core";
-import { baseURL, about, person, work } from "@/resources";
-import { Projects } from "@/components/work/Projects";
+import { Button, Column, Heading, Media, Meta, Row, Schema, Text } from "@once-ui-system/core";
+import { baseURL, person, work } from "@/resources";
 
-export async function generateMetadata() {
-  return Meta.generate({
-    title: work.title,
-    description: work.description,
-    baseURL: baseURL,
-    image: `/api/og/generate?title=${encodeURIComponent(work.title)}`,
-    path: work.path,
-  });
-}
+export async function generateMetadata() { return Meta.generate({ title: work.title, description: work.description, baseURL, image: `${baseURL}${person.avatar}`, path: work.path }); }
 
-export default function Work() {
-  return (
-    <Column maxWidth="m" paddingTop="24">
-      <Schema
-        as="webPage"
-        baseURL={baseURL}
-        path={work.path}
-        title={work.title}
-        description={work.description}
-        image={`/api/og/generate?title=${encodeURIComponent(work.title)}`}
-        author={{
-          name: person.name,
-          url: `${baseURL}${about.path}`,
-          image: `${baseURL}${person.avatar}`,
-        }}
-      />
-      <Heading marginBottom="l" variant="heading-strong-xl" align="center">
-        {work.title}
-      </Heading>
-      <Projects />
-    </Column>
-  );
-}
+export default function Featured() { return <Column maxWidth="l" fillWidth gap="xl" paddingY="12"><Schema as="webPage" baseURL={baseURL} path={work.path} title={work.title} description={work.description} image={`${baseURL}${person.avatar}`} author={{ name: person.name, url: `${baseURL}/about`, image: `${baseURL}${person.avatar}` }} /><Column gap="m" paddingY="xl"><Text variant="label-default-s" onBackground="brand-strong">THE MEDIA PORTFOLIO</Text><Heading variant="display-strong-xl">Featured Content</Heading><Text variant="heading-default-l" onBackground="neutral-weak">A closer look at DrakeShi🍃 and the world of @sheluvsdrak3.</Text></Column><Row fillWidth gap="xl" s={{ direction: "column" }}><Column flex={7} minHeight={480} radius="xl" overflow="hidden"><Media src="/images/projects/project-01/cover-01.jpg" alt="DrakeShi🍃 on TikTok" fill sizes="(max-width: 768px) 100vw, 60vw" /></Column><Column flex={5} gap="l" vertical="center"><Text variant="label-default-s" onBackground="brand-strong">TIKTOK · @SHELUVSDRAK3</Text><Heading as="h2" variant="display-strong-m">DrakeShi on TikTok</Heading><Text variant="body-default-l" onBackground="neutral-weak">A look at DrakeShi&apos;s short-form content, creator style, and growing presence on TikTok.</Text><Text variant="body-default-m" onBackground="neutral-weak">Relatable content, situational comedy, humor, personality, and lifestyle media — made to entertain.</Text><Button href="https://www.tiktok.com/@sheluvsdrak3" variant="primary" size="l" arrowIcon>View on TikTok</Button></Column></Row><Row fillWidth gap="l" paddingTop="xl" s={{ direction: "column" }}><Column flex={1} background="neutral-alpha-weak" radius="l" padding="l" gap="m"><Heading as="h3" variant="heading-strong-l">More Featured Content</Heading><Text onBackground="neutral-weak">Follow the creator journey on the platforms where it happens.</Text><Button href="https://www.youtube.com/channel/@sheluvsdrak3" variant="secondary" arrowIcon>Watch on YouTube</Button></Column><Column flex={1} background="brand-alpha-weak" radius="l" padding="l" gap="m"><Heading as="h3" variant="heading-strong-l">Keep scrolling</Heading><Text onBackground="neutral-weak">See the visual side of DrakeShi🍃 in the gallery.</Text><Button href="/gallery" variant="tertiary" arrowIcon>Open Gallery</Button></Column></Row></Column>; }
