@@ -1,261 +1,60 @@
-import crypto from "node:crypto";
-
-export type TikTokProfile = {
-  username: string;
-  displayName?: string;
-};
-
-export type TikTokVideo = {
-  shareUrl?: string;
-  description?: string;
-  coverImageUrl?: string;
-  publishedAt?: string;
-  viewCount?: number;
-  likeCount?: number;
-  commentCount?: number;
-};
-
-export type TikTokData = {
-  available: boolean;
-  profile?: TikTokProfile;
-  latestVideo?: TikTokVideo;
-  followers?: number;
-  following?: number;
-  likes?: number;
-  videos?: number;
-  updatedAt?: string;
-};
-
-type LivecountsUser = {
-  id?: string | number;
-  userId?: string | number;
-  uniqueId?: string;
-  username?: string;
-  nickname?: string;
-  displayName?: string;
-  followers?: number;
-  following?: number;
-  likes?: number;
-  videos?: number;
-};
-
-type LivecountsSearchResponse =
-  | LivecountsUser[]
-  | LivecountsUser
-  | {
-      user?: LivecountsUser;
-      users?: LivecountsUser[];
-      results?: LivecountsUser[];
-    };
-
-type LivecountsUserStats = {
-  followers?: number;
-  following?: number;
-  likes?: number;
-  videos?: number;
-};
+import type { TikTokData } from "./types";
 
 const USERNAME = "sheluvsdrak3";
 
-const SEARCH_URL = "https://tiktok.livecounts.io/user/search";
-const STATS_URL = "https://tiktok.livecounts.io/user/stats";
+const STATS_URL =
+  "https://tiktok-api.tokcounter.com/user/stats/7254124266240951342";
 
-function createHeaders(): Record<string, string> {
-  const catto = Date.now().toString();
-
-  const ajay = crypto
-    .createHash("sha1")
-    .update(catto)
-    .digest("hex");
-
-  const midas = crypto
-    .createHash("sha384")
-    .update(ajay + catto)
-    .digest("hex");
-
-  return {
-    Accept: "application/json, text/plain, */*",
-    "User-Agent":
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
-    Referer:
-      "https://livecounts.io/tiktok-live-follower-counter/sheluvsdrak3",
-    Origin: "https://livecounts.io",
-    "x-ajay": ajay,
-    "x-catto": catto,
-    "x-midas": midas,
-  };
-}
-
-async function livecountsFetch(
-  url: string,
-): Promise<Response> {
-  return fetch(url, {
-    method: "GET",
-    headers: createHeaders(),
-    cache: "no-store",
-  });
-}
-
-function normalizeUsers(
-  data: LivecountsSearchResponse,
-): LivecountsUser[] {
-  if (Array.isArray(data)) {
-    return data;
-  }
-
-  if ("users" in data && Array.isArray(data.users)) {
-    return data.users;
-  }
-
-  if ("results" in data && Array.isArray(data.results)) {
-    return data.results;
-  }
-
-  if ("user" in data && data.user) {
-    return [data.user];
-  }
-
-  if (
-    "username" in data ||
-    "uniqueId" in data ||
-    "userId" in data ||
-    "id" in data
-  ) {
-    return [data];
-  }
-
-  return [];
-}
-
-async function findUser(
-  username: string,
-): Promise<LivecountsUser | null> {
-  const response = await livecountsFetch(
-    `${SEARCH_URL}/${encodeURIComponent(username)}`,
-  );
-
-  if (!response.ok) {
-    return null;
-  }
-
-  const data =
-    (await response.json()) as LivecountsSearchResponse;
-
-  const users = normalizeUsers(data);
-
-  const exactMatch = users.find((user) => {
-    const usernames = [
-      user.username,
-      user.uniqueId,
-    ].filter(
-      (value): value is string => Boolean(value),
-    );
-
-    return usernames.some(
-      (value) =>
-        value.toLowerCase() === username.toLowerCase(),
-    );
-  });
-
-  return exactMatch ?? users[0] ?? null;
-}
-
-async function getUserStats(
-  userId: string,
-): Promise<LivecountsUserStats | null> {
-  const response = await livecountsFetch(
-    `${STATS_URL}/${encodeURIComponent(userId)}`,
-  );
-
-  if (!response.ok) {
-    return null;
-  }
-
-  return (await response.json()) as LivecountsUserStats;
-}
-
-function toNumber(
-  value: unknown,
-): number | undefined {
-  if (typeof value === "number" && Number.isFinite(value)) {
-    return value;
-  }
-
-  if (typeof value === "string") {
-    const parsed = Number(value);
-
-    if (Number.isFinite(parsed)) {
-      return parsed;
-    }
-  }
-
-  return undefined;
-}
+type TokCounterResponse = {
+  cache?: boolean;
+  success?: boolean;
+  followerCount?: number;
+  likeCount?: number;
+  followingCount?: number;
+  videoCount?: number;
+};
 
 export async function getTikTokData(): Promise<TikTokData> {
-  const profile: TikTokProfile = {
+  const profile = {
     username: USERNAME,
     displayName: "DrakeShi🍃",
   };
 
   try {
-    const user = await findUser(USERNAME);
+    const response = await fetch(STATS_URL, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/154.0.0.0 Safari/537.36",
+      },
+      cache: "no-store",
+    });
 
-    if (!user) {
+    if (!response.ok) {
       return {
         available: false,
         profile,
       };
     }
 
-    const userId =
-      user.userId?.toString() ??
-      user.id?.toString();
+    const data =
+      (await response.json()) as TokCounterResponse;
 
-    let stats: LivecountsUserStats = {
-      followers: toNumber(user.followers),
-      following: toNumber(user.following),
-      likes: toNumber(user.likes),
-      videos: toNumber(user.videos),
-    };
-
-    if (userId) {
-      const apiStats = await getUserStats(userId);
-
-      if (apiStats) {
-        stats = {
-          followers:
-            toNumber(apiStats.followers) ??
-            stats.followers,
-
-          following:
-            toNumber(apiStats.following) ??
-            stats.following,
-
-          likes:
-            toNumber(apiStats.likes) ??
-            stats.likes,
-
-          videos:
-            toNumber(apiStats.videos) ??
-            stats.videos,
-        };
-      }
+    if (data.success !== true) {
+      return {
+        available: false,
+        profile,
+      };
     }
 
-    const hasStats =
-      stats.followers !== undefined ||
-      stats.following !== undefined ||
-      stats.likes !== undefined ||
-      stats.videos !== undefined;
-
     return {
-      available: hasStats,
+      available: true,
       profile,
-      followers: stats.followers,
-      following: stats.following,
-      likes: stats.likes,
-      videos: stats.videos,
+      followers: data.followerCount,
+      likes: data.likeCount,
+      following: data.followingCount,
+      videos: data.videoCount,
       updatedAt: new Date().toISOString(),
     };
   } catch {
