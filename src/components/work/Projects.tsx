@@ -4,11 +4,19 @@ import { Column, Heading, Row, Text } from "@once-ui-system/core";
 
 interface ProjectsProps {
   range?: [number, number?];
+  exclude?: string[];
 }
 
-export async function Projects({ range }: ProjectsProps) {
+export async function Projects({ range, exclude }: ProjectsProps) {
   const tiktok = await getTikTokData();
-  const allVideos = tiktok.videos ?? [];
+
+  let allVideos = tiktok.videos ?? [];
+
+  if (exclude && exclude.length > 0) {
+    allVideos = allVideos.filter(
+      (video) => !exclude.includes(video.id),
+    );
+  }
 
   const displayedVideos = range
     ? allVideos.slice(range[0] - 1, range[1] ?? allVideos.length)
@@ -17,7 +25,10 @@ export async function Projects({ range }: ProjectsProps) {
   return (
     <Column fillWidth gap="xl" marginBottom="40" paddingX="l">
       <Column gap="8">
-        <Text variant="label-default-s" onBackground="brand-strong">
+        <Text
+          variant="label-default-s"
+          onBackground="brand-strong"
+        >
           TIKTOK
         </Text>
 
@@ -123,6 +134,7 @@ export async function Projects({ range }: ProjectsProps) {
                     >
                       VIEWS
                     </Text>
+
                     <Text variant="heading-strong-m">
                       {video.viewCount.toLocaleString()}
                     </Text>
@@ -137,6 +149,7 @@ export async function Projects({ range }: ProjectsProps) {
                     >
                       LIKES
                     </Text>
+
                     <Text variant="heading-strong-m">
                       {video.likeCount.toLocaleString()}
                     </Text>
@@ -151,6 +164,7 @@ export async function Projects({ range }: ProjectsProps) {
                     >
                       COMMENTS
                     </Text>
+
                     <Text variant="heading-strong-m">
                       {video.commentCount.toLocaleString()}
                     </Text>
@@ -160,7 +174,10 @@ export async function Projects({ range }: ProjectsProps) {
 
               <Row gap="12" wrap>
                 <a
-                  href={video.shareUrl ?? "https://www.tiktok.com/@sheluvsdrak3"}
+                  href={
+                    video.shareUrl ??
+                    "https://www.tiktok.com/@sheluvsdrak3"
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -174,4 +191,3 @@ export async function Projects({ range }: ProjectsProps) {
     </Column>
   );
 }
-
