@@ -137,10 +137,7 @@ export default async function Home() {
 
         {/* LATEST TIKTOK */}
         <Column fillWidth gap="m">
-          <Column
-            gap="8"
-            className="latest-tiktok-header"
-          >
+          <Column gap="8">
             <Text
               variant="label-default-s"
               onBackground="brand-strong"
@@ -165,28 +162,28 @@ export default async function Home() {
               radius="xl"
               padding="l"
               vertical="center"
-              className="latest-tiktok-card"
               style={{
                 position: "relative",
                 overflow: "hidden",
-                border: "1px solid rgba(255,255,255,0.06)",
+                border:
+                  "1px solid rgba(255,255,255,0.06)",
                 boxShadow:
-                  "0 24px 80px rgba(0, 0, 0, 0.22)",
+                  "0 24px 80px rgba(0,0,0,0.22)",
               }}
               s={{
                 direction: "column",
                 gap: "l",
               }}
             >
-              {/* SUBTLE GLOW */}
+              {/* BLUE / PURPLE GLOW */}
               <div
                 aria-hidden="true"
                 style={{
                   position: "absolute",
-                  top: "-180px",
-                  left: "-120px",
-                  width: "420px",
-                  height: "420px",
+                  top: -180,
+                  left: -120,
+                  width: 420,
+                  height: 420,
                   borderRadius: "50%",
                   background:
                     "radial-gradient(circle, rgba(0,187,255,0.13), transparent 68%)",
@@ -198,10 +195,10 @@ export default async function Home() {
                 aria-hidden="true"
                 style={{
                   position: "absolute",
-                  bottom: "-200px",
-                  right: "-100px",
-                  width: "420px",
-                  height: "420px",
+                  right: -100,
+                  bottom: -200,
+                  width: 420,
+                  height: 420,
                   borderRadius: "50%",
                   background:
                     "radial-gradient(circle, rgba(75,57,204,0.14), transparent 68%)",
@@ -209,10 +206,8 @@ export default async function Home() {
                 }}
               />
 
-              {/* VERTICAL TIKTOK MEDIA */}
+              {/* TIKTOK VIDEO */}
               <Column
-                className="latest-tiktok-media"
-                position="relative"
                 flex={1}
                 aspectRatio="9/16"
                 maxHeight={620}
@@ -222,6 +217,7 @@ export default async function Home() {
                 style={{
                   position: "relative",
                   minHeight: 420,
+                  zIndex: 1,
                 }}
               >
                 <Media
@@ -237,7 +233,7 @@ export default async function Home() {
                   sizes="(max-width: 768px) 100vw, 38vw"
                 />
 
-                {/* TIKTOK PILL */}
+                {/* TIKTOK BADGE */}
                 <Row
                   gap="8"
                   vertical="center"
@@ -246,11 +242,10 @@ export default async function Home() {
                     top: 16,
                     left: 16,
                     zIndex: 2,
-                    padding:
-                      "7px 11px",
+                    padding: "7px 11px",
                     borderRadius: 999,
                     background:
-                      "rgba(6, 9, 19, 0.72)",
+                      "rgba(6,9,19,0.72)",
                     border:
                       "1px solid rgba(255,255,255,0.12)",
                     backdropFilter:
@@ -262,8 +257,7 @@ export default async function Home() {
                       width: 7,
                       height: 7,
                       borderRadius: "50%",
-                      background:
-                        "#00BBFF",
+                      background: "#00BBFF",
                       boxShadow:
                         "0 0 12px rgba(0,187,255,0.85)",
                     }}
@@ -272,7 +266,7 @@ export default async function Home() {
                   <Text
                     variant="label-default-s"
                     style={{
-                      color: "#fff",
+                      color: "#ffffff",
                       fontSize: 11,
                     }}
                   >
@@ -280,7 +274,7 @@ export default async function Home() {
                   </Text>
                 </Row>
 
-                {/* BOTTOM GRADIENT */}
+                {/* IMAGE GRADIENT */}
                 <div
                   aria-hidden="true"
                   style={{
@@ -296,11 +290,10 @@ export default async function Home() {
                 />
               </Column>
 
-              {/* VIDEO INFORMATION */}
+              {/* VIDEO DETAILS */}
               <Column
                 flex={1}
                 gap="m"
-                className="latest-tiktok-info"
                 style={{
                   position: "relative",
                   zIndex: 1,
@@ -335,7 +328,7 @@ export default async function Home() {
                   humor, and everyday content.
                 </Text>
 
-                {/* VIDEO STATS */}
+                {/* STATS */}
                 <Row
                   fillWidth
                   gap="l"
@@ -391,8 +384,12 @@ export default async function Home() {
                   )}
                 </Row>
 
-                {/* WATCH BUTTON */}
-                <Row gap="12" wrap marginTop="s">
+                {/* BUTTONS */}
+                <Row
+                  gap="12"
+                  wrap
+                  marginTop="s"
+                >
                   <Button
                     href={
                       video.shareUrl ??
@@ -413,19 +410,18 @@ export default async function Home() {
                   </Button>
                 </Row>
 
-                {/* CREATOR LABEL */}
+                {/* CREATOR */}
                 <Row
                   gap="8"
                   vertical="center"
                   marginTop="s"
                 >
-                  <div
+                  <span
                     style={{
                       width: 8,
                       height: 8,
                       borderRadius: "50%",
-                      background:
-                        "#00BBFF",
+                      background: "#00BBFF",
                       boxShadow:
                         "0 0 14px rgba(0,187,255,0.7)",
                     }}
@@ -444,7 +440,7 @@ export default async function Home() {
             <Row
               fillWidth
               background="neutral-alpha-weak"
-              radius="xl"
+              radius="l"
               padding="l"
               gap="l"
               vertical="center"
