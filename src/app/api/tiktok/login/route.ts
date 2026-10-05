@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import crypto from "crypto";
 
 export async function GET() {
-  const clientKey = process.env.TIKTOK_CLIENT_KEY;
+  const clientKey = process.env.client_key;
   const redirectUri = process.env.TIKTOK_REDIRECT_URI;
 
   if (!clientKey || !redirectUri) {
