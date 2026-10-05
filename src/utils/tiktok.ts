@@ -35,6 +35,15 @@ type LivecountsUser = {
   displayName?: string;
 };
 
+type LivecountsSearchResponse =
+  | LivecountsUser[]
+  | LivecountsUser
+  | {
+      user?: LivecountsUser;
+      users?: LivecountsUser[];
+      results?: LivecountsUser[];
+    };
+
 type LivecountsUserStats = {
   followers?: number;
   following?: number;
@@ -47,7 +56,7 @@ const USERNAME = "sheluvsdrak3";
 const SEARCH_URL = "https://tiktok.livecounts.io/user/search";
 const STATS_URL = "https://tiktok.livecounts.io/user/stats";
 
-function createHeaders() {
+function createHeaders(): Record<string, string> {
   const catto = Date.now().toString();
 
   const ajay = crypto
@@ -74,19 +83,19 @@ async function livecountsFetch(
   url: string,
   init: RequestInit = {},
 ): Promise<Response> {
-  const headers = {
-    ...createHeaders(),
-    ...(init.headers ?? {}),
-  };
-
   return fetch(url, {
     ...init,
-    headers,
+    headers: {
+      ...createHeaders(),
+      ...(init.headers ?? {}),
+    },
     cache: "no-store",
   });
 }
 
-async function findUserId(username: string): Promise<string | null> {
+async function findUserId(
+  username: string,
+): Promise<string | null> {
   const url = `${SEARCH_URL}/${encodeURIComponent(username)}`;
 
   const response = await livecountsFetch(url);
@@ -95,24 +104,30 @@ async function findUserId(username: string): Promise<string | null> {
     return null;
   }
 
-  const data = (await response.json()) as
-    | LivecountsUser
-    | LivecountsUser[]
-    | {
-        user?: LivecountsUser;
-        users?: LivecountsUser[];
-        results?: LivecountsUser[];
-      };
+  const data =
+    (await response.json()) as LivecountsSearchResponse;
 
-  const users: LivecountsUser[] = Array.isArray(data)
-    ? data
-    : "users" in data && Array.isArray(data.users)
-      ? data.users
-      : "results" in data && Array.isArray(data.results)
-        ? data.results
-        : "user" in data && data.user
-          ? [data.user]
-          : [data];
+  let users: LivecountsUser[] = [];
+
+  if (Array.isArray(data)) {
+    users = data;
+  } else if ("users" in data && Array.isArray(data.users)) {
+    users = data.users;
+  } else if (
+    "results" in data &&
+    Array.isArray(data.results)
+  ) {
+    users = data.results;
+  } else if ("user" in data && data.user) {
+    users = [data.user];
+  } else if (
+    "username" in data ||
+    "uniqueId" in data ||
+    "userId" in data ||
+    "id" in data
+  ) {
+    users = [data];
+  }
 
   const match = users.find((user) => {
     const values = [
@@ -120,11 +135,13 @@ async function findUserId(username: string): Promise<string | null> {
       user.uniqueId,
       user.id,
       user.userId,
-    ].filter(Boolean);
+    ].filter(
+      (value): value is string => Boolean(value),
+    );
 
     return values.some(
       (value) =>
-        String(value).toLowerCase() === username.toLowerCase(),
+        value.toLowerCase() === username.toLowerCase(),
     );
   });
 
