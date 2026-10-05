@@ -1,9 +1,9 @@
-
 import {
   Avatar,
   Button,
   Column,
   Heading,
+  Line,
   Media,
   Meta,
   Row,
@@ -28,9 +28,13 @@ export default function About() {
       maxWidth="l"
       fillWidth
       gap="xl"
-      paddingY="12"
+      paddingY="l"
       paddingX="l"
-      s={{ paddingX: "m" }}
+      s={{
+        paddingX: "m",
+        paddingY: "m",
+        gap: "l",
+      }}
     >
       <Schema
         as="webPage"
@@ -46,7 +50,8 @@ export default function About() {
         }}
       />
 
-      {/* INTRO */}
+      {/* HERO */}
+
       <Row
         fillWidth
         gap="xl"
@@ -54,36 +59,47 @@ export default function About() {
         s={{
           direction: "column",
           gap: "l",
+          vertical: "start",
         }}
       >
         <Column
-          flex={4}
+          flex={6}
           gap="m"
-          vertical="center"
+          paddingY="l"
+          s={{
+            paddingY: "0",
+            fillWidth: true,
+          }}
         >
-          <Avatar
-            src={person.avatar}
-            size="xl"
-          />
-
-          <Text
-            variant="label-default-s"
-            onBackground="brand-strong"
+          <Row
+            gap="s"
+            vertical="center"
           >
-            THE CREATOR
-          </Text>
+            <Avatar
+              src={person.avatar}
+              size="m"
+            />
+
+            <Text
+              variant="label-default-s"
+              onBackground="brand-strong"
+            >
+              THE CREATOR
+            </Text>
+          </Row>
 
           <Heading
             as="h1"
-            variant="display-strong-l"
+            variant="display-strong-xl"
             wrap="balance"
           >
             About DrakeShi🍃
           </Heading>
 
           <Text
-            variant="heading-default-m"
+            variant="heading-default-l"
             onBackground="neutral-weak"
+            wrap="balance"
           >
             Drake McMahan · @sheluvsdrak3
           </Text>
@@ -94,7 +110,8 @@ export default function About() {
             wrap="balance"
           >
             Digital content creator and videographer creating
-            relatable, personality-driven short-form content.
+            relatable, personality-driven content built around
+            humor, personality, and everyday moments.
           </Text>
 
           <Row
@@ -119,11 +136,37 @@ export default function About() {
         </Column>
 
         <Column
-          flex={6}
-          gap="l"
-          padding="xl"
-          background="neutral-alpha-weak"
+          flex={4}
+          fillWidth
+          aspectRatio="1/1"
+          maxHeight={440}
           radius="xl"
+          overflow="hidden"
+          background="brand-alpha-weak"
+          s={{
+            maxHeight: 360,
+          }}
+        >
+          <Media
+            src={person.avatar}
+            alt="DrakeShi, digital content creator and videographer"
+            fill
+            sizes="(max-width: 768px) 100vw, 40vw"
+          />
+        </Column>
+      </Row>
+
+      {/* CREATOR PROFILE */}
+
+      <Column
+        fillWidth
+        gap="m"
+      >
+        <Line />
+
+        <Column
+          gap="m"
+          maxWidth="m"
         >
           <Text
             variant="label-default-s"
@@ -134,7 +177,7 @@ export default function About() {
 
           <Heading
             as="h2"
-            variant="heading-strong-xl"
+            variant="display-strong-m"
             wrap="balance"
           >
             A personality-first creator.
@@ -143,6 +186,7 @@ export default function About() {
           <Text
             variant="body-default-l"
             onBackground="neutral-weak"
+            wrap="balance"
           >
             DrakeShi🍃 is the online creator identity of Drake
             McMahan, known across social platforms as
@@ -152,71 +196,104 @@ export default function About() {
           <Text
             variant="body-default-l"
             onBackground="neutral-weak"
+            wrap="balance"
           >
             His content centers around relatable humor,
             situational comedy, everyday moments, personality,
-            and lifestyle-driven short-form videos.
+            and lifestyle-driven short-form content.
+          </Text>
+        </Column>
+      </Column>
+
+      {/* THE STORY */}
+
+      <Row
+        fillWidth
+        gap="l"
+        s={{
+          direction: "column",
+          gap: "m",
+        }}
+      >
+        <Column
+          flex={1}
+          gap="m"
+          padding="l"
+          border="neutral-alpha-medium"
+          borderStyle="solid"
+          borderWidth={1}
+          radius="l"
+          style={{
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              background:
+                "radial-gradient(circle at 0% 100%, rgba(0, 187, 255, 0.10), transparent 55%)",
+            }}
+          />
+
+          <Text
+            variant="label-default-s"
+            onBackground="brand-strong"
+          >
+            THE STORY
+          </Text>
+
+          <Heading
+            as="h2"
+            variant="heading-strong-xl"
+            wrap="balance"
+          >
+            Built around personality and real moments.
+          </Heading>
+        </Column>
+
+        <Column
+          flex={1}
+          gap="m"
+          padding="l"
+          background="neutral-alpha-weak"
+          radius="l"
+        >
+          <Text
+            variant="body-default-l"
+            onBackground="neutral-weak"
+          >
+            DrakeShi started as an online identity built around
+            sharing entertaining moments and connecting with
+            people through short-form video.
           </Text>
 
           <Text
             variant="body-default-l"
             onBackground="neutral-weak"
           >
-            Rather than following one fixed format, DrakeShi
-            focuses on making content that feels natural,
-            entertaining, and easy for viewers to connect with.
+            Over time, that identity grew into a creator brand
+            centered around humor, personality, and relatable
+            experiences.
+          </Text>
+
+          <Text
+            variant="body-default-m"
+            onBackground="neutral-weak"
+          >
+            The goal is simple: create content that feels natural,
+            entertaining, and worth sharing.
           </Text>
         </Column>
       </Row>
 
-      {/* CREATOR STORY */}
-      <Column
-        fillWidth
-        gap="m"
-      >
-        <Text
-          variant="label-default-s"
-          onBackground="brand-strong"
-        >
-          THE STORY
-        </Text>
+      {/* FOCUS */}
 
-        <Heading
-          as="h2"
-          variant="display-strong-m"
-          wrap="balance"
-        >
-          Built around personality and real moments.
-        </Heading>
-
-        <Text
-          variant="body-default-l"
-          onBackground="neutral-weak"
-          wrap="balance"
-        >
-          DrakeShi started as an online identity built around
-          sharing entertaining moments and connecting with
-          people through short-form video. Over time, that
-          identity grew into a recognizable creator brand
-          centered around humor, personality, and relatable
-          experiences.
-        </Text>
-
-        <Text
-          variant="body-default-l"
-          onBackground="neutral-weak"
-          wrap="balance"
-        >
-          The goal is simple: make videos that feel like
-          something you would send to a friend, talk about
-          later, or watch again.
-        </Text>
-      </Column>
-
-      {/* IMAGE + FOCUS */}
       <Row
         fillWidth
-        gap="l"
+        gap="xl"
         vertical="center"
         s={{
           direction: "column",
@@ -224,10 +301,14 @@ export default function About() {
         }}
       >
         <Column
-          flex={7}
-          minHeight={400}
+          flex={6}
+          minHeight={420}
           radius="xl"
           overflow="hidden"
+          background="brand-alpha-weak"
+          s={{
+            minHeight: 300,
+          }}
         >
           <Media
             src="/images/gallery/horizontal-3.jpg"
@@ -238,9 +319,8 @@ export default function About() {
         </Column>
 
         <Column
-          flex={5}
+          flex={4}
           gap="m"
-          vertical="center"
         >
           <Text
             variant="label-default-s"
@@ -274,22 +354,30 @@ export default function About() {
             way to entertain.
           </Text>
 
-          <Button
-            href="/gallery"
-            variant="tertiary"
-            arrowIcon
-          >
-            Enter the gallery
-          </Button>
+          <Row marginTop="s">
+            <Button
+              href="/gallery"
+              variant="secondary"
+              arrowIcon
+            >
+              Explore the gallery
+            </Button>
+          </Row>
         </Column>
       </Row>
 
       {/* CONTENT STYLE */}
+
       <Column
         fillWidth
         gap="l"
       >
-        <Column gap="m">
+        <Line />
+
+        <Column
+          gap="m"
+          maxWidth="m"
+        >
           <Text
             variant="label-default-s"
             onBackground="brand-strong"
@@ -308,28 +396,55 @@ export default function About() {
           <Text
             variant="body-default-l"
             onBackground="neutral-weak"
+            wrap="balance"
           >
-            The content is built around the things that make
-            short-form video entertaining: personality, timing,
-            humor, and moments people can recognize from their
-            own lives.
+            Personality, timing, humor, and moments people can
+            recognize from their own lives.
           </Text>
         </Column>
 
         <Row
           fillWidth
-          gap="m"
+          border="neutral-alpha-medium"
+          borderStyle="solid"
+          borderWidth={1}
+          radius="l"
+          padding="l"
+          gap="l"
           s={{
             direction: "column",
+            gap: "m",
+          }}
+          style={{
+            position: "relative",
+            overflow: "hidden",
           }}
         >
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              background:
+                "radial-gradient(circle at 50% 120%, rgba(0, 187, 255, 0.10), transparent 55%)",
+            }}
+          />
+
           <Column
             flex={1}
             gap="s"
-            padding="l"
-            background="neutral-alpha-weak"
-            radius="l"
+            padding="m"
+            style={{
+              position: "relative",
+            }}
           >
+            <Text
+              variant="label-default-s"
+              onBackground="neutral-weak"
+            >
+              01
+            </Text>
+
             <Heading
               as="h3"
               variant="heading-strong-l"
@@ -349,10 +464,18 @@ export default function About() {
           <Column
             flex={1}
             gap="s"
-            padding="l"
-            background="neutral-alpha-weak"
-            radius="l"
+            padding="m"
+            style={{
+              position: "relative",
+            }}
           >
+            <Text
+              variant="label-default-s"
+              onBackground="neutral-weak"
+            >
+              02
+            </Text>
+
             <Heading
               as="h3"
               variant="heading-strong-l"
@@ -372,10 +495,18 @@ export default function About() {
           <Column
             flex={1}
             gap="s"
-            padding="l"
-            background="neutral-alpha-weak"
-            radius="l"
+            padding="m"
+            style={{
+              position: "relative",
+            }}
           >
+            <Text
+              variant="label-default-s"
+              onBackground="neutral-weak"
+            >
+              03
+            </Text>
+
             <Heading
               as="h3"
               variant="heading-strong-l"
@@ -388,13 +519,14 @@ export default function About() {
               onBackground="neutral-weak"
             >
               Content where the creator himself is part of what
-              makes each video recognizable.
+              makes each piece recognizable.
             </Text>
           </Column>
         </Row>
       </Column>
 
-      {/* SOCIAL PRESENCE */}
+      {/* ONLINE */}
+
       <Row
         fillWidth
         gap="xl"
@@ -426,21 +558,41 @@ export default function About() {
           <Text
             variant="body-default-l"
             onBackground="neutral-weak"
+            wrap="balance"
           >
             Find DrakeShi across social platforms for new
-            videos, updates, and behind-the-scenes content.
+            content, updates, and more.
           </Text>
         </Column>
 
         <Column
           flex={1}
-          gap="s"
+          gap="m"
           padding="l"
-          background="neutral-alpha-weak"
+          border="neutral-alpha-medium"
+          borderStyle="solid"
+          borderWidth={1}
           radius="l"
+          style={{
+            position: "relative",
+            overflow: "hidden",
+          }}
         >
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              background:
+                "radial-gradient(circle at 100% 100%, rgba(75, 57, 204, 0.12), transparent 55%)",
+            }}
+          />
+
           <Text
             variant="heading-strong-m"
+            style={{
+              position: "relative",
+            }}
           >
             @sheluvsdrak3
           </Text>
@@ -448,6 +600,9 @@ export default function About() {
           <Text
             variant="body-default-s"
             onBackground="neutral-weak"
+            style={{
+              position: "relative",
+            }}
           >
             TikTok · YouTube · Instagram · LinkMe
           </Text>
@@ -456,6 +611,9 @@ export default function About() {
             gap="8"
             wrap
             marginTop="s"
+            style={{
+              position: "relative",
+            }}
           >
             {social.map(
               (item) =>
@@ -475,11 +633,14 @@ export default function About() {
       </Row>
 
       {/* CLOSING */}
+
       <Column
         fillWidth
         gap="m"
         paddingY="l"
       >
+        <Line />
+
         <Text
           variant="label-default-s"
           onBackground="brand-strong"
@@ -492,7 +653,7 @@ export default function About() {
           variant="display-strong-m"
           wrap="balance"
         >
-          There is more to DrakeShi🍃.
+          Explore the world of DrakeShi🍃.
         </Heading>
 
         <Text
@@ -500,8 +661,8 @@ export default function About() {
           onBackground="neutral-weak"
           wrap="balance"
         >
-          Explore the latest TikToks, browse the creator
-          gallery, or connect with DrakeShi across social media.
+          Browse the gallery, explore featured content, or
+          connect with DrakeShi across social media.
         </Text>
 
         <Row
@@ -514,7 +675,7 @@ export default function About() {
             variant="primary"
             arrowIcon
           >
-            Explore TikToks
+            Featured content
           </Button>
 
           <Button
