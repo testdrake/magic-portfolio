@@ -9,8 +9,14 @@ export async function GET() {
   if (!clientKey || !redirectUri) {
     return NextResponse.json(
       {
-        error:
-          "Missing TikTok environment variables.",
+        error: "Missing TikTok environment variables.",
+        checks: {
+          clientKey: Boolean(clientKey),
+          redirectUri: Boolean(redirectUri),
+          clientSecret: Boolean(
+            process.env.TIKTOK_CLIENT_SECRET,
+          ),
+        },
       },
       { status: 500 },
     );
@@ -31,7 +37,8 @@ export async function GET() {
   const params = new URLSearchParams({
     client_key: clientKey,
     response_type: "code",
-    scope: "user.info.basic,user.info.profile,user.info.stats,video.list",
+    scope:
+      "user.info.basic,user.info.profile,user.info.stats,video.list",
     redirect_uri: redirectUri,
     state,
   });
