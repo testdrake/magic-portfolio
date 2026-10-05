@@ -1,3 +1,4 @@
+
 import {
   Button,
   Column,
@@ -8,9 +9,7 @@ import {
   Text,
 } from "@once-ui-system/core";
 import { baseURL, home, person } from "@/resources";
-import { getTikTokData } from "@/utils/tiktok";
 import TikTokStats from "@/components/TikTokStats";
-import LatestTikTok from "@/components/LatestTikTok";
 
 const tiktokUrl =
   "https://www.tiktok.com/@sheluvsdrak3";
@@ -21,10 +20,7 @@ const youtubeUrl =
 const instagramUrl =
   "https://www.instagram.com/sheluvsdrak3/";
 
-export default async function Home() {
-  const tiktok = await getTikTokData();
-  const video = tiktok.latestVideo;
-
+export default function Home() {
   return (
     <Column
       as="main"
@@ -163,53 +159,174 @@ export default async function Home() {
 
         <TikTokStats />
 
-        {/* LATEST TIKTOK */}
-
-        <LatestTikTok video={video} />
-
-        {/* FEATURED */}
+        {/* FEATURED CONTENT */}
 
         <Column
           fillWidth
-          gap="m"
+          gap="l"
+          paddingY="m"
         >
           <Line />
 
-          <Text
-            variant="label-default-s"
-            onBackground="brand-strong"
+          <Column
+            gap="m"
+            maxWidth="m"
           >
-            FEATURED CONTENT
-          </Text>
+            <Text
+              variant="label-default-s"
+              onBackground="brand-strong"
+            >
+              FEATURED CONTENT
+            </Text>
 
-          <Heading
-            as="h2"
-            variant="display-strong-m"
-            wrap="balance"
-          >
-            DrakeShi on TikTok
-          </Heading>
+            <Heading
+              as="h2"
+              variant="display-strong-m"
+              wrap="balance"
+            >
+              DrakeShi across social media.
+            </Heading>
 
-          <Text
-            variant="body-default-l"
-            onBackground="neutral-weak"
-            wrap="balance"
-          >
-            Explore featured content from DrakeShi🍃 and
-            @sheluvsdrak3.
-          </Text>
+            <Text
+              variant="body-default-l"
+              onBackground="neutral-weak"
+              wrap="balance"
+            >
+              Explore DrakeShi🍃, discover featured work, and
+              follow the creator journey across social
+              platforms.
+            </Text>
+          </Column>
 
           <Row
-            gap="12"
-            wrap
+            fillWidth
+            gap="m"
+            s={{
+              direction: "column",
+            }}
           >
-            <Button
-              href="/work/featured-tiktok"
-              variant="secondary"
-              arrowIcon
+            <Column
+              flex={1}
+              gap="m"
+              padding="l"
+              background="neutral-alpha-weak"
+              radius="xl"
             >
-              Explore featured content
-            </Button>
+              <Text
+                variant="label-default-s"
+                onBackground="brand-strong"
+              >
+                TIKTOK
+              </Text>
+
+              <Heading
+                as="h3"
+                variant="heading-strong-l"
+                wrap="balance"
+              >
+                @sheluvsdrak3
+              </Heading>
+
+              <Text
+                variant="body-default-s"
+                onBackground="neutral-weak"
+                wrap="balance"
+              >
+                Relatable humor, personality, everyday moments,
+                and short-form content.
+              </Text>
+
+              <Button
+                href={tiktokUrl}
+                variant="primary"
+                size="s"
+                arrowIcon
+              >
+                Visit TikTok
+              </Button>
+            </Column>
+
+            <Column
+              flex={1}
+              gap="m"
+              padding="l"
+              background="brand-alpha-weak"
+              radius="xl"
+            >
+              <Text
+                variant="label-default-s"
+                onBackground="brand-strong"
+              >
+                YOUTUBE
+              </Text>
+
+              <Heading
+                as="h3"
+                variant="heading-strong-l"
+                wrap="balance"
+              >
+                DrakeShi on YouTube
+              </Heading>
+
+              <Text
+                variant="body-default-s"
+                onBackground="neutral-weak"
+                wrap="balance"
+              >
+                Video content, creator projects, and more
+                from DrakeShi🍃.
+              </Text>
+
+              <Button
+                href={youtubeUrl}
+                variant="secondary"
+                size="s"
+                arrowIcon
+              >
+                Visit YouTube
+              </Button>
+            </Column>
+
+            <Column
+              flex={1}
+              gap="m"
+              padding="l"
+              background="neutral-alpha-weak"
+              radius="xl"
+            >
+              <Text
+                variant="label-default-s"
+                onBackground="brand-strong"
+              >
+                GALLERY
+              </Text>
+
+              <Heading
+                as="h3"
+                variant="heading-strong-l"
+                wrap="balance"
+              >
+                Visuals & moments
+              </Heading>
+
+              <Text
+                variant="body-default-s"
+                onBackground="neutral-weak"
+                wrap="balance"
+              >
+                Explore photos, creator visuals, and highlights
+                from DrakeShi🍃.
+              </Text>
+
+              <Button
+                href="/gallery"
+                variant="tertiary"
+                size="s"
+                arrowIcon
+              >
+                Open Gallery
+              </Button>
+            </Column>
           </Row>
         </Column>
 
@@ -219,6 +336,7 @@ export default async function Home() {
           fillWidth
           gap="xl"
           vertical="center"
+          paddingY="m"
           s={{
             direction: "column",
             gap: "l",
@@ -258,7 +376,7 @@ export default async function Home() {
               McMahan, known online as @sheluvsdrak3. His
               content focuses on relatable humor, personality,
               everyday moments, and entertaining short-form
-              videos.
+              content.
             </Text>
 
             <Row gap="12" wrap>
@@ -278,6 +396,7 @@ export default async function Home() {
         <Column
           fillWidth
           gap="m"
+          paddingY="m"
         >
           <Line />
 
