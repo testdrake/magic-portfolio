@@ -8,6 +8,7 @@ import {
   Schema,
   Text,
 } from "@once-ui-system/core";
+import Script from "next/script";
 import { baseURL, person, work } from "@/resources";
 import { getTikTokData } from "@/utils/tiktok";
 
@@ -34,6 +35,11 @@ export default async function Featured() {
       paddingX="l"
       s={{ paddingX: "m" }}
     >
+      <Script
+        src="https://www.tiktok.com/embed.js"
+        strategy="afterInteractive"
+      />
+
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -78,195 +84,194 @@ export default async function Featured() {
         </Text>
       </Column>
 
-      {/* VIDEO FEED */}
+      {/* TIKTOK VIDEOS */}
       <Column
         fillWidth
         gap="l"
       >
         {videos.length > 0 ? (
-          videos.map((video) => (
-            <Row
-              key={video.id}
-              fillWidth
-              gap="xl"
-              background="neutral-alpha-weak"
-              radius="xl"
-              overflow="hidden"
-              padding="l"
-              s={{
-                direction: "column",
-                gap: "l",
-                padding: "m",
-              }}
-            >
-              {/* PLAYER */}
-              <Column
-                flex={1}
-                fillWidth
-                horizontal="center"
-                vertical="center"
-              >
-                <Column
-                  aspectRatio="9/16"
-                  radius="l"
-                  overflow="hidden"
-                  style={{
-                    width: "100%",
-                    maxWidth: "320px",
-                    boxShadow:
-                      "0 20px 60px rgba(0, 187, 255, 0.10)",
-                  }}
-                >
-                  <iframe
-                    src={`https://www.tiktok.com/player/v1/${video.id}?controls=1&description=1&music_info=1&rel=0&fullscreen_button=1&progress_bar=1&play_button=1&volume_control=1&timestamp=1`}
-                    title={
-                      video.description ??
-                      video.title ??
-                      "DrakeShi TikTok"
-                    }
-                    allow="fullscreen"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      border: "none",
-                      display: "block",
-                    }}
-                  />
-                </Column>
-              </Column>
+          videos.map((video) => {
+            const videoUrl =
+              video.shareUrl ??
+              `https://www.tiktok.com/@sheluvsdrak3/video/${video.id}`;
 
-              {/* INFORMATION */}
-              <Column
-                flex={1}
+            return (
+              <Row
+                key={video.id}
                 fillWidth
-                gap="l"
-                vertical="center"
+                gap="xl"
+                background="neutral-alpha-weak"
+                radius="xl"
+                overflow="hidden"
                 padding="l"
                 s={{
+                  direction: "column",
+                  gap: "l",
                   padding: "m",
-                  vertical: "start",
                 }}
               >
-                <Column gap="8">
-                  <Text
-                    variant="label-default-s"
-                    onBackground="brand-strong"
+                {/* TIKTOK EMBED */}
+                <Column
+                  flex={1}
+                  fillWidth
+                  horizontal="center"
+                  vertical="center"
+                >
+                  <Column
+                    fillWidth
+                    horizontal="center"
+                    style={{
+                      minWidth: 0,
+                    }}
                   >
-                    @sheluvsdrak3
-                  </Text>
-
-                  <Heading
-                    as="h2"
-                    variant="display-strong-s"
-                    wrap="balance"
-                  >
-                    {video.description ??
-                      video.title ??
-                      "DrakeShi TikTok"}
-                  </Heading>
+                    <blockquote
+                      className="tiktok-embed"
+                      cite={videoUrl}
+                      data-video-id={video.id}
+                      style={{
+                        maxWidth: "605px",
+                        minWidth: "325px",
+                        width: "100%",
+                        margin: 0,
+                      }}
+                    >
+                      <section>
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={videoUrl}
+                        >
+                          @sheluvsdrak3
+                        </a>
+                      </section>
+                    </blockquote>
+                  </Column>
                 </Column>
 
-                {/* STATS */}
-                <Row
+                {/* VIDEO INFORMATION */}
+                <Column
+                  flex={1}
+                  fillWidth
                   gap="l"
-                  wrap
+                  vertical="center"
+                  padding="l"
+                  s={{
+                    padding: "m",
+                    vertical: "start",
+                  }}
                 >
-                  {video.viewCount !== undefined && (
-                    <Column gap="4">
-                      <Text
-                        variant="label-default-xs"
-                        onBackground="neutral-weak"
-                      >
-                        VIEWS
-                      </Text>
+                  <Column gap="8">
+                    <Text
+                      variant="label-default-s"
+                      onBackground="brand-strong"
+                    >
+                      @sheluvsdrak3
+                    </Text>
 
-                      <Text variant="heading-strong-m">
-                        {video.viewCount.toLocaleString()}
-                      </Text>
-                    </Column>
-                  )}
+                    <Heading
+                      as="h2"
+                      variant="display-strong-s"
+                      wrap="balance"
+                    >
+                      {video.description ??
+                        video.title ??
+                        "DrakeShi TikTok"}
+                    </Heading>
+                  </Column>
 
-                  {video.likeCount !== undefined && (
-                    <Column gap="4">
-                      <Text
-                        variant="label-default-xs"
-                        onBackground="neutral-weak"
-                      >
-                        LIKES
-                      </Text>
-
-                      <Text variant="heading-strong-m">
-                        {video.likeCount.toLocaleString()}
-                      </Text>
-                    </Column>
-                  )}
-
-                  {video.commentCount !== undefined && (
-                    <Column gap="4">
-                      <Text
-                        variant="label-default-xs"
-                        onBackground="neutral-weak"
-                      >
-                        COMMENTS
-                      </Text>
-
-                      <Text variant="heading-strong-m">
-                        {video.commentCount.toLocaleString()}
-                      </Text>
-                    </Column>
-                  )}
-
-                  {video.shareCount !== undefined && (
-                    <Column gap="4">
-                      <Text
-                        variant="label-default-xs"
-                        onBackground="neutral-weak"
-                      >
-                        SHARES
-                      </Text>
-
-                      <Text variant="heading-strong-m">
-                        {video.shareCount.toLocaleString()}
-                      </Text>
-                    </Column>
-                  )}
-                </Row>
-
-                {/* DATE */}
-                {video.publishedAt && (
-                  <Text
-                    variant="body-default-s"
-                    onBackground="neutral-weak"
+                  {/* STATS */}
+                  <Row
+                    gap="l"
+                    wrap
                   >
-                    {new Date(
-                      video.publishedAt,
-                    ).toLocaleDateString("en-US", {
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </Text>
-                )}
+                    {video.viewCount !== undefined && (
+                      <Column gap="4">
+                        <Text
+                          variant="label-default-xs"
+                          onBackground="neutral-weak"
+                        >
+                          VIEWS
+                        </Text>
 
-                <Row
-                  gap="12"
-                  wrap
-                  marginTop="s"
-                >
+                        <Text variant="heading-strong-m">
+                          {video.viewCount.toLocaleString()}
+                        </Text>
+                      </Column>
+                    )}
+
+                    {video.likeCount !== undefined && (
+                      <Column gap="4">
+                        <Text
+                          variant="label-default-xs"
+                          onBackground="neutral-weak"
+                        >
+                          LIKES
+                        </Text>
+
+                        <Text variant="heading-strong-m">
+                          {video.likeCount.toLocaleString()}
+                        </Text>
+                      </Column>
+                    )}
+
+                    {video.commentCount !== undefined && (
+                      <Column gap="4">
+                        <Text
+                          variant="label-default-xs"
+                          onBackground="neutral-weak"
+                        >
+                          COMMENTS
+                        </Text>
+
+                        <Text variant="heading-strong-m">
+                          {video.commentCount.toLocaleString()}
+                        </Text>
+                      </Column>
+                    )}
+
+                    {video.shareCount !== undefined && (
+                      <Column gap="4">
+                        <Text
+                          variant="label-default-xs"
+                          onBackground="neutral-weak"
+                        >
+                          SHARES
+                        </Text>
+
+                        <Text variant="heading-strong-m">
+                          {video.shareCount.toLocaleString()}
+                        </Text>
+                      </Column>
+                    )}
+                  </Row>
+
+                  {/* DATE */}
+                  {video.publishedAt && (
+                    <Text
+                      variant="body-default-s"
+                      onBackground="neutral-weak"
+                    >
+                      {new Date(
+                        video.publishedAt,
+                      ).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </Text>
+                  )}
+
                   <Button
-                    href={
-                      video.shareUrl ??
-                      "https://www.tiktok.com/@sheluvsdrak3"
-                    }
+                    href={videoUrl}
                     variant="primary"
                     arrowIcon
                   >
                     Watch on TikTok
                   </Button>
-                </Row>
-              </Column>
-            </Row>
-          ))
+                </Column>
+              </Row>
+            );
+          })
         ) : (
           <Column
             fillWidth
