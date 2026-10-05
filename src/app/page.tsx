@@ -190,94 +190,86 @@ export default async function Home() {
               {/* TIKTOK THUMBNAIL */}
 
               <Column
-                flex={1}
-                aspectRatio="9/16"
-                maxHeight={520}
-                radius="l"
-                overflow="hidden"
-                background="page"
-                style={{
-                  position: "relative",
-                  boxShadow:
-                    "0 0 45px rgba(0, 187, 255, 0.10)",
-                }}
-              >
-                {video.coverImageUrl ? (
-                  <Media
-                    src={video.coverImageUrl}
-                    alt={
-                      video.description ??
-                      "Latest DrakeShi TikTok video"
-                    }
-                    fill
-                    sizes="(max-width: 768px) 100vw, 360px"
-                  />
-                ) : (
-                  <Column
-                    fillWidth
-                    fillHeight
-                    horizontal="center"
-                    vertical="center"
-                    gap="s"
-                    padding="l"
-                  >
-                    <Text
-                      variant="heading-strong-m"
-                      align="center"
-                    >
-                      Latest TikTok
-                    </Text>
+  flex={1}
+  aspectRatio="9/16"
+  maxHeight={520}
+  radius="l"
+  overflow="hidden"
+  background="page"
+  style={{
+    position: "relative",
+    boxShadow:
+      "0 0 45px rgba(0, 187, 255, 0.10)",
+  }}
+>
+  {video.coverImageUrl ? (
+    <img
+      src={video.coverImageUrl}
+      alt={
+        video.description ??
+        "Latest DrakeShi TikTok video"
+      }
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        display: "block",
+      }}
+    />
+  ) : (
+    <Column
+      fillWidth
+      fillHeight
+      horizontal="center"
+      vertical="center"
+      gap="s"
+      padding="l"
+    >
+      <Text variant="heading-strong-m">
+        Latest TikTok
+      </Text>
 
-                    <Text
-                      variant="body-default-s"
-                      onBackground="neutral-weak"
-                      align="center"
-                    >
-                      @sheluvsdrak3
-                    </Text>
-                  </Column>
-                )}
+      <Text
+        variant="body-default-s"
+        onBackground="neutral-weak"
+      >
+        @sheluvsdrak3
+      </Text>
+    </Column>
+  )}
 
-                {/* TIKTOK LABEL */}
+  <Row
+    gap="8"
+    vertical="center"
+    style={{
+      position: "absolute",
+      top: "16px",
+      left: "16px",
+      zIndex: 2,
+      padding: "7px 11px",
+      borderRadius: "999px",
+      background: "rgba(6, 9, 19, 0.82)",
+      border:
+        "1px solid rgba(255,255,255,0.12)",
+      backdropFilter: "blur(10px)",
+    }}
+  >
+    <span
+      style={{
+        width: "7px",
+        height: "7px",
+        borderRadius: "50%",
+        background: "#00BBFF",
+        boxShadow:
+          "0 0 12px rgba(0, 187, 255, 0.8)",
+      }}
+    />
 
-                <Row
-                  gap="8"
-                  vertical="center"
-                  style={{
-                    position: "absolute",
-                    top: "16px",
-                    left: "16px",
-                    zIndex: 2,
-                    padding:
-                      "7px 11px",
-                    borderRadius: "999px",
-                    background:
-                      "rgba(6, 9, 19, 0.82)",
-                    border:
-                      "1px solid rgba(255,255,255,0.12)",
-                    backdropFilter:
-                      "blur(10px)",
-                  }}
-                >
-                  <span
-                    style={{
-                      width: "7px",
-                      height: "7px",
-                      borderRadius: "50%",
-                      background:
-                        "#00BBFF",
-                      boxShadow:
-                        "0 0 12px rgba(0, 187, 255, 0.8)",
-                    }}
-                  />
-
-                  <Text
-                    variant="label-default-s"
-                  >
-                    TIKTOK
-                  </Text>
-                </Row>
-              </Column>
+    <Text variant="label-default-s">
+      TIKTOK
+    </Text>
+  </Row>
+</Column>
 
               {/* VIDEO INFORMATION */}
 
