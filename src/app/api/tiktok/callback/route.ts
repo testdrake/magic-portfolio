@@ -45,6 +45,7 @@ export async function GET(
   }
 
   const cookieStore = await cookies();
+
   const savedState = cookieStore.get(
     "tiktok_oauth_state",
   )?.value;
@@ -132,9 +133,5 @@ export async function GET(
     expiresIn: data.expires_in,
     refreshExpiresIn:
       data.refresh_expires_in,
-    accessToken:
-      data.access_token,
-    refreshToken:
-      data.refresh_token,
   });
 }
