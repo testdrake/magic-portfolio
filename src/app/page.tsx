@@ -175,7 +175,7 @@ export default async function Home() {
                 gap: "l",
               }}
             >
-              {/* BLUE / PURPLE GLOW */}
+              {/* BLUE GLOW */}
               <div
                 aria-hidden="true"
                 style={{
@@ -191,6 +191,7 @@ export default async function Home() {
                 }}
               />
 
+              {/* PURPLE GLOW */}
               <div
                 aria-hidden="true"
                 style={{
@@ -206,7 +207,7 @@ export default async function Home() {
                 }}
               />
 
-              {/* TIKTOK VIDEO */}
+              {/* TIKTOK PREVIEW */}
               <Column
                 flex={1}
                 aspectRatio="9/16"
@@ -218,22 +219,56 @@ export default async function Home() {
                   position: "relative",
                   minHeight: 420,
                   zIndex: 1,
+                  background:
+                    "linear-gradient(145deg, #0b1020 0%, #060913 55%, #11162b 100%)",
+                  border:
+                    "1px solid rgba(255,255,255,0.08)",
                 }}
               >
-                <Media
-                  src={
-                    video.coverImageUrl ??
-                    person.avatar
-                  }
-                  alt={
-                    video.description ??
-                    "Latest DrakeShi TikTok video"
-                  }
-                  fill
-                  sizes="(max-width: 768px) 100vw, 38vw"
-                />
+                {/* PLAY BUTTON */}
+                <Column
+                  fillWidth
+                  fillHeight
+                  horizontal="center"
+                  vertical="center"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                  }}
+                >
+                  <Column
+                    horizontal="center"
+                    vertical="center"
+                    style={{
+                      width: 76,
+                      height: 76,
+                      borderRadius: "50%",
+                      background:
+                        "rgba(0,187,255,0.12)",
+                      border:
+                        "1px solid rgba(0,187,255,0.35)",
+                      boxShadow:
+                        "0 0 40px rgba(0,187,255,0.16)",
+                      backdropFilter: "blur(12px)",
+                    }}
+                  >
+                    <span
+                      style={{
+                        marginLeft: 5,
+                        width: 0,
+                        height: 0,
+                        borderTop:
+                          "11px solid transparent",
+                        borderBottom:
+                          "11px solid transparent",
+                        borderLeft:
+                          "16px solid #ffffff",
+                      }}
+                    />
+                  </Column>
+                </Column>
 
-                {/* TIKTOK BADGE */}
+                {/* TIKTOK LABEL */}
                 <Row
                   gap="8"
                   vertical="center"
@@ -248,8 +283,7 @@ export default async function Home() {
                       "rgba(6,9,19,0.72)",
                     border:
                       "1px solid rgba(255,255,255,0.12)",
-                    backdropFilter:
-                      "blur(12px)",
+                    backdropFilter: "blur(12px)",
                   }}
                 >
                   <span
@@ -274,23 +308,38 @@ export default async function Home() {
                   </Text>
                 </Row>
 
-                {/* IMAGE GRADIENT */}
-                <div
-                  aria-hidden="true"
+                {/* CREATOR INFO */}
+                <Column
                   style={{
                     position: "absolute",
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    height: "35%",
-                    background:
-                      "linear-gradient(to top, rgba(6,9,19,0.48), transparent)",
-                    pointerEvents: "none",
+                    left: 18,
+                    right: 18,
+                    bottom: 18,
+                    zIndex: 2,
                   }}
-                />
+                >
+                  <Text
+                    variant="heading-strong-s"
+                    style={{
+                      color: "#ffffff",
+                    }}
+                  >
+                    @sheluvsdrak3
+                  </Text>
+
+                  <Text
+                    variant="body-default-s"
+                    style={{
+                      color:
+                        "rgba(255,255,255,0.65)",
+                    }}
+                  >
+                    Latest TikTok
+                  </Text>
+                </Column>
               </Column>
 
-              {/* VIDEO DETAILS */}
+              {/* VIDEO INFORMATION */}
               <Column
                 flex={1}
                 gap="m"
@@ -324,19 +373,18 @@ export default async function Home() {
                   wrap="balance"
                 >
                   The latest video from DrakeShi🍃,
-                  featuring relatable moments,
-                  humor, and everyday content.
+                  featuring relatable moments, humor,
+                  and everyday content.
                 </Text>
 
-                {/* STATS */}
+                {/* VIDEO STATS */}
                 <Row
                   fillWidth
                   gap="l"
                   wrap
                   paddingY="s"
                 >
-                  {video.viewCount !==
-                    undefined && (
+                  {video.viewCount !== undefined && (
                     <Column gap="4">
                       <Text
                         variant="label-default-s"
@@ -351,8 +399,7 @@ export default async function Home() {
                     </Column>
                   )}
 
-                  {video.likeCount !==
-                    undefined && (
+                  {video.likeCount !== undefined && (
                     <Column gap="4">
                       <Text
                         variant="label-default-s"
@@ -367,8 +414,7 @@ export default async function Home() {
                     </Column>
                   )}
 
-                  {video.commentCount !==
-                    undefined && (
+                  {video.commentCount !== undefined && (
                     <Column gap="4">
                       <Text
                         variant="label-default-s"
@@ -440,7 +486,7 @@ export default async function Home() {
             <Row
               fillWidth
               background="neutral-alpha-weak"
-              radius="l"
+              radius="xl"
               padding="l"
               gap="l"
               vertical="center"
