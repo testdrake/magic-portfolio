@@ -87,7 +87,6 @@ export default async function Home() {
               variant="body-default-l"
               onBackground="neutral-weak"
               wrap="balance"
-              maxWidth="s"
             >
               Creating relatable short-form content built around humor,
               personality, and everyday moments.
@@ -359,7 +358,6 @@ export default async function Home() {
             variant="body-default-l"
             onBackground="neutral-weak"
             wrap="balance"
-            maxWidth="m"
           >
             Explore featured content from DrakeShi🍃 and
             @sheluvsdrak3.
@@ -520,4 +518,3 @@ export const metadata = {
   title: home.title,
   description: home.description,
 };
-
