@@ -27,12 +27,16 @@ export type TikTokData = {
 };
 
 type LivecountsUser = {
-  id?: string;
-  userId?: string;
+  id?: string | number;
+  userId?: string | number;
   uniqueId?: string;
   username?: string;
   nickname?: string;
   displayName?: string;
+  followers?: number;
+  following?: number;
+  likes?: number;
+  videos?: number;
 };
 
 type LivecountsSearchResponse =
@@ -72,7 +76,7 @@ function createHeaders(): Record<string, string> {
   return {
     Accept: "application/json",
     "User-Agent":
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/154.0.0.0 Safari/537.36",
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
     "x-ajay": ajay,
     "x-catto": catto,
     "x-midas": midas,
@@ -81,24 +85,51 @@ function createHeaders(): Record<string, string> {
 
 async function livecountsFetch(
   url: string,
-  init: RequestInit = {},
 ): Promise<Response> {
   return fetch(url, {
-    ...init,
-    headers: {
-      ...createHeaders(),
-      ...(init.headers ?? {}),
-    },
+    method: "GET",
+    headers: createHeaders(),
     cache: "no-store",
   });
 }
 
-async function findUserId(
-  username: string,
-): Promise<string | null> {
-  const url = `${SEARCH_URL}/${encodeURIComponent(username)}`;
+function normalizeUsers(
+  data: LivecountsSearchResponse,
+): LivecountsUser[] {
+  if (Array.isArray(data)) {
+    return data;
+  }
 
-  const response = await livecountsFetch(url);
+  if ("users" in data && Array.isArray(data.users)) {
+    return data.users;
+  }
+
+  if ("results" in data && Array.isArray(data.results)) {
+    return data.results;
+  }
+
+  if ("user" in data && data.user) {
+    return [data.user];
+  }
+
+  if (
+    "username" in data ||
+    "uniqueId" in data ||
+    "userId" in data ||
+    "id" in data
+  ) {
+    return [data];
+  }
+
+  return [];
+}
+
+async function findUser(
+  username: string,
+): Promise<LivecountsUser | null> {
+  const response = await livecountsFetch(
+    `${SEARCH_URL}/${encodeURIComponent(username)}`,
+  );
 
   if (!response.ok) {
     return null;
@@ -107,49 +138,23 @@ async function findUserId(
   const data =
     (await response.json()) as LivecountsSearchResponse;
 
-  let users: LivecountsUser[] = [];
+  const users = normalizeUsers(data);
 
-  if (Array.isArray(data)) {
-    users = data;
-  } else if ("users" in data && Array.isArray(data.users)) {
-    users = data.users;
-  } else if (
-    "results" in data &&
-    Array.isArray(data.results)
-  ) {
-    users = data.results;
-  } else if ("user" in data && data.user) {
-    users = [data.user];
-  } else if (
-    "username" in data ||
-    "uniqueId" in data ||
-    "userId" in data ||
-    "id" in data
-  ) {
-    users = [data];
-  }
+  return (
+    users.find((user) => {
+      const usernames = [
+        user.username,
+        user.uniqueId,
+      ].filter(
+        (value): value is string => Boolean(value),
+      );
 
-  const match = users.find((user) => {
-    const values = [
-      user.username,
-      user.uniqueId,
-      user.id,
-      user.userId,
-    ].filter(
-      (value): value is string => Boolean(value),
-    );
-
-    return values.some(
-      (value) =>
-        value.toLowerCase() === username.toLowerCase(),
-    );
-  });
-
-  if (!match) {
-    return null;
-  }
-
-  return match.userId ?? match.id ?? null;
+      return usernames.some(
+        (value) =>
+          value.toLowerCase() === username.toLowerCase(),
+      );
+    }) ?? users[0] ?? null
+  );
 }
 
 async function getUserStats(
@@ -166,63 +171,85 @@ async function getUserStats(
   return (await response.json()) as LivecountsUserStats;
 }
 
+function toNumber(
+  value: unknown,
+): number | undefined {
+  return typeof value === "number" &&
+    Number.isFinite(value)
+    ? value
+    : undefined;
+}
+
 export async function getTikTokData(): Promise<TikTokData> {
+  const profile: TikTokProfile = {
+    username: USERNAME,
+    displayName: "DrakeShi🍃",
+  };
+
   try {
-    const userId = await findUserId(USERNAME);
+    const user = await findUser(USERNAME);
 
-    if (!userId) {
+    if (!user) {
       return {
         available: false,
-        profile: {
-          username: USERNAME,
-          displayName: "DrakeShi🍃",
-        },
+        profile,
       };
     }
 
-    const stats = await getUserStats(userId);
+    const userId =
+      user.userId?.toString() ??
+      user.id?.toString();
 
-    if (!stats) {
-      return {
-        available: false,
-        profile: {
-          username: USERNAME,
-          displayName: "DrakeShi🍃",
-        },
-      };
+    let stats: LivecountsUserStats = {
+      followers: toNumber(user.followers),
+      following: toNumber(user.following),
+      likes: toNumber(user.likes),
+      videos: toNumber(user.videos),
+    };
+
+    if (userId) {
+      const apiStats = await getUserStats(userId);
+
+      if (apiStats) {
+        stats = {
+          followers:
+            toNumber(apiStats.followers) ??
+            stats.followers,
+
+          following:
+            toNumber(apiStats.following) ??
+            stats.following,
+
+          likes:
+            toNumber(apiStats.likes) ??
+            stats.likes,
+
+          videos:
+            toNumber(apiStats.videos) ??
+            stats.videos,
+        };
+      }
     }
+
+    const hasStats =
+      stats.followers !== undefined ||
+      stats.following !== undefined ||
+      stats.likes !== undefined ||
+      stats.videos !== undefined;
 
     return {
-      available: true,
-      profile: {
-        username: USERNAME,
-        displayName: "DrakeShi🍃",
-      },
-      followers:
-        typeof stats.followers === "number"
-          ? stats.followers
-          : undefined,
-      following:
-        typeof stats.following === "number"
-          ? stats.following
-          : undefined,
-      likes:
-        typeof stats.likes === "number"
-          ? stats.likes
-          : undefined,
-      videos:
-        typeof stats.videos === "number"
-          ? stats.videos
-          : undefined,
+      available: hasStats,
+      profile,
+      followers: stats.followers,
+      following: stats.following,
+      likes: stats.likes,
+      videos: stats.videos,
       updatedAt: new Date().toISOString(),
     };
   } catch {
     return {
       available: false,
-      profile: {
-        username: USERNAME,
-        displayName: "DrakeShi🍃",
-      },
+      profile,
     };
   }
 }
