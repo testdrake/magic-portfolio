@@ -1,4 +1,3 @@
-
 import {
   Button,
   Column,
@@ -163,15 +162,11 @@ export default function Home() {
 
         <Column
           fillWidth
-          gap="l"
-          paddingY="m"
+          gap="m"
         >
           <Line />
 
-          <Column
-            gap="m"
-            maxWidth="m"
-          >
+          <Column gap="m">
             <Text
               variant="label-default-s"
               onBackground="brand-strong"
@@ -192,29 +187,49 @@ export default function Home() {
               onBackground="neutral-weak"
               wrap="balance"
             >
-              Explore DrakeShi🍃, discover featured work, and
-              follow the creator journey across social
-              platforms.
+              Explore DrakeShi🍃 and follow the creator journey
+              across social platforms.
             </Text>
           </Column>
 
           <Row
             fillWidth
-            gap="m"
+            border="neutral-alpha-medium"
+            borderStyle="solid"
+            borderWidth={1}
+            radius="l"
+            padding="l"
+            gap="l"
             s={{
               direction: "column",
+              gap: "m",
+            }}
+            style={{
+              position: "relative",
+              overflow: "hidden",
             }}
           >
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                pointerEvents: "none",
+                background:
+                  "radial-gradient(circle at 50% 120%, rgba(0, 187, 255, 0.10), transparent 55%)",
+              }}
+            />
+
             <Column
               flex={1}
-              gap="m"
-              padding="l"
-              background="neutral-alpha-weak"
-              radius="xl"
+              gap="s"
+              padding="m"
+              style={{
+                position: "relative",
+              }}
             >
               <Text
                 variant="label-default-s"
-                onBackground="brand-strong"
+                onBackground="neutral-weak"
               >
                 TIKTOK
               </Text>
@@ -236,26 +251,29 @@ export default function Home() {
                 and short-form content.
               </Text>
 
-              <Button
-                href={tiktokUrl}
-                variant="primary"
-                size="s"
-                arrowIcon
-              >
-                Visit TikTok
-              </Button>
+              <Row marginTop="s">
+                <Button
+                  href={tiktokUrl}
+                  variant="primary"
+                  size="s"
+                  arrowIcon
+                >
+                  Visit TikTok
+                </Button>
+              </Row>
             </Column>
 
             <Column
               flex={1}
-              gap="m"
-              padding="l"
-              background="brand-alpha-weak"
-              radius="xl"
+              gap="s"
+              padding="m"
+              style={{
+                position: "relative",
+              }}
             >
               <Text
                 variant="label-default-s"
-                onBackground="brand-strong"
+                onBackground="neutral-weak"
               >
                 YOUTUBE
               </Text>
@@ -273,30 +291,33 @@ export default function Home() {
                 onBackground="neutral-weak"
                 wrap="balance"
               >
-                Video content, creator projects, and more
-                from DrakeShi🍃.
+                Video content, creator projects, and more from
+                DrakeShi🍃.
               </Text>
 
-              <Button
-                href={youtubeUrl}
-                variant="secondary"
-                size="s"
-                arrowIcon
-              >
-                Visit YouTube
-              </Button>
+              <Row marginTop="s">
+                <Button
+                  href={youtubeUrl}
+                  variant="secondary"
+                  size="s"
+                  arrowIcon
+                >
+                  Visit YouTube
+                </Button>
+              </Row>
             </Column>
 
             <Column
               flex={1}
-              gap="m"
-              padding="l"
-              background="neutral-alpha-weak"
-              radius="xl"
+              gap="s"
+              padding="m"
+              style={{
+                position: "relative",
+              }}
             >
               <Text
                 variant="label-default-s"
-                onBackground="brand-strong"
+                onBackground="neutral-weak"
               >
                 GALLERY
               </Text>
@@ -318,14 +339,16 @@ export default function Home() {
                 from DrakeShi🍃.
               </Text>
 
-              <Button
-                href="/gallery"
-                variant="tertiary"
-                size="s"
-                arrowIcon
-              >
-                Open Gallery
-              </Button>
+              <Row marginTop="s">
+                <Button
+                  href="/gallery"
+                  variant="tertiary"
+                  size="s"
+                  arrowIcon
+                >
+                  Open Gallery
+                </Button>
+              </Row>
             </Column>
           </Row>
         </Column>
@@ -461,34 +484,6 @@ export default function Home() {
             </Row>
           </Row>
         </Column>
-
-        {/* FOOTER */}
-
-        <Row
-          fillWidth
-          horizontal="between"
-          vertical="center"
-          paddingY="m"
-          s={{
-            direction: "column",
-            align: "start",
-            gap: "s",
-          }}
-        >
-          <Text
-            variant="body-default-s"
-            onBackground="neutral-weak"
-          >
-            DrakeShi🍃 · @sheluvsdrak3
-          </Text>
-
-          <Text
-            variant="body-default-s"
-            onBackground="neutral-weak"
-          >
-            © 2026 DrakeShi
-          </Text>
-        </Row>
       </Column>
     </Column>
   );
