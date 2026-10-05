@@ -1,7 +1,16 @@
 "use client";
 
-import { Column, Heading, Row, Text } from "@once-ui-system/core";
-import { useEffect, useState } from "react";
+import {
+  Column,
+  Heading,
+  Row,
+  Text,
+} from "@once-ui-system/core";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 type TikTokData = {
   available: boolean;
@@ -11,11 +20,127 @@ type TikTokData = {
   videos?: number;
 };
 
+type AnimatedNumberProps = {
+  value?: number;
+  duration?: number;
+};
+
+function AnimatedNumber({
+  value,
+  duration = 900,
+}: AnimatedNumberProps) {
+  const [displayValue, setDisplayValue] = useState(value ?? 0);
+  const previousValue = useRef(value ?? 0);
+
+  useEffect(() => {
+    if (value === undefined) return;
+
+    const startValue = previousValue.current;
+    const endValue = value;
+
+    if (startValue === endValue) {
+      setDisplayValue(endValue);
+      return;
+    }
+
+    const startTime = performance.now();
+    let animationFrame: number;
+
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      const easedProgress =
+        1 - Math.pow(1 - progress, 3);
+
+      const currentValue = Math.round(
+        startValue +
+          (endValue - startValue) * easedProgress,
+      );
+
+      setDisplayValue(currentValue);
+
+      if (progress < 1) {
+        animationFrame =
+          requestAnimationFrame(animate);
+      } else {
+        previousValue.current = endValue;
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+    };
+  }, [value, duration]);
+
+  if (value === undefined) {
+    return <>—</>;
+  }
+
+  return <>{displayValue.toLocaleString()}</>;
+}
+
+type StatCardProps = {
+  label: string;
+  value?: number;
+  delay: string;
+};
+
+function StatCard({
+  label,
+  value,
+  delay,
+}: StatCardProps) {
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setActive(true);
+    }, Number.parseInt(delay));
+
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  return (
+    <Column
+      flex={1}
+      gap="4"
+      style={{
+        opacity: active ? 1 : 0,
+        transform: active
+          ? "translateY(0)"
+          : "translateY(16px)",
+        transition:
+          "opacity 700ms ease, transform 700ms cubic-bezier(0.22, 1, 0.36, 1)",
+      }}
+    >
+      <Text
+        variant="label-default-s"
+        onBackground="neutral-weak"
+      >
+        {label}
+      </Text>
+
+      <Text variant="display-strong-m">
+        <AnimatedNumber value={value} />
+      </Text>
+    </Column>
+  );
+}
+
 export default function TikTokStats() {
-  const [stats, setStats] = useState<TikTokData | null>(null);
+  const [stats, setStats] = useState<TikTokData | null>(
+    null,
+  );
+  const [isRefreshing, setIsRefreshing] =
+    useState(false);
 
   async function loadStats() {
     try {
+      setIsRefreshing(true);
+
       const response = await fetch("/api/tiktok", {
         cache: "no-store",
       });
@@ -26,7 +151,11 @@ export default function TikTokStats() {
 
       setStats(data);
     } catch {
-      // Keep existing stats if the request fails.
+      // Keep the existing values if the request fails.
+    } finally {
+      setTimeout(() => {
+        setIsRefreshing(false);
+      }, 700);
     }
   }
 
@@ -38,14 +167,14 @@ export default function TikTokStats() {
     return () => clearInterval(interval);
   }, []);
 
-  const formatNumber = (value?: number) => {
-    if (value === undefined) return "—";
-
-    return value.toLocaleString();
-  };
-
   return (
-    <Column fillWidth gap="m">
+    <Column
+      fillWidth
+      gap="m"
+      style={{
+        position: "relative",
+      }}
+    >
       <Row
         fillWidth
         horizontal="between"
@@ -73,12 +202,34 @@ export default function TikTokStats() {
           </Heading>
         </Column>
 
-        <Text
-          variant="body-default-s"
-          onBackground="neutral-weak"
+        <Row
+          gap="8"
+          vertical="center"
+          style={{
+            opacity: stats?.available ? 1 : 0.5,
+            transition: "opacity 400ms ease",
+          }}
         >
-          ● Live from TikTok
-        </Text>
+          <span
+            style={{
+              width: "7px",
+              height: "7px",
+              borderRadius: "50%",
+              background: "#00BBFF",
+              boxShadow:
+                "0 0 12px rgba(0, 187, 255, 0.8)",
+              animation:
+                "tiktokPulse 1.8s ease-in-out infinite",
+            }}
+          />
+
+          <Text
+            variant="body-default-s"
+            onBackground="neutral-weak"
+          >
+            Live from TikTok
+          </Text>
+        </Row>
       </Row>
 
       <Row
@@ -93,59 +244,65 @@ export default function TikTokStats() {
           direction: "column",
           gap: "m",
         }}
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          transition:
+            "border-color 400ms ease, box-shadow 400ms ease",
+          boxShadow: isRefreshing
+            ? "0 0 35px rgba(0, 187, 255, 0.12)"
+            : "0 0 0 rgba(0, 0, 0, 0)",
+        }}
       >
-        <Column flex={1} gap="4">
-          <Text
-            variant="label-default-s"
-            onBackground="neutral-weak"
-          >
-            FOLLOWERS
-          </Text>
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            background:
+              "radial-gradient(circle at 50% 120%, rgba(0, 187, 255, 0.10), transparent 55%)",
+          }}
+        />
 
-          <Text variant="display-strong-m">
-            {formatNumber(stats?.followers)}
-          </Text>
-        </Column>
+        <StatCard
+          label="FOLLOWERS"
+          value={stats?.followers}
+          delay="0"
+        />
 
-        <Column flex={1} gap="4">
-          <Text
-            variant="label-default-s"
-            onBackground="neutral-weak"
-          >
-            LIKES
-          </Text>
+        <StatCard
+          label="LIKES"
+          value={stats?.likes}
+          delay="100"
+        />
 
-          <Text variant="display-strong-m">
-            {formatNumber(stats?.likes)}
-          </Text>
-        </Column>
+        <StatCard
+          label="FOLLOWING"
+          value={stats?.following}
+          delay="200"
+        />
 
-        <Column flex={1} gap="4">
-          <Text
-            variant="label-default-s"
-            onBackground="neutral-weak"
-          >
-            FOLLOWING
-          </Text>
-
-          <Text variant="display-strong-m">
-            {formatNumber(stats?.following)}
-          </Text>
-        </Column>
-
-        <Column flex={1} gap="4">
-          <Text
-            variant="label-default-s"
-            onBackground="neutral-weak"
-          >
-            VIDEOS
-          </Text>
-
-          <Text variant="display-strong-m">
-            {formatNumber(stats?.videos)}
-          </Text>
-        </Column>
+        <StatCard
+          label="VIDEOS"
+          value={stats?.videos}
+          delay="300"
+        />
       </Row>
+
+      <style jsx>{`
+        @keyframes tiktokPulse {
+          0%,
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+
+          50% {
+            opacity: 0.45;
+            transform: scale(0.72);
+          }
+        }
+      `}</style>
     </Column>
   );
 }
