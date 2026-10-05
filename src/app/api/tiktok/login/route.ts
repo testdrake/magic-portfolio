@@ -14,7 +14,7 @@ export async function GET() {
           clientKey: Boolean(clientKey),
           redirectUri: Boolean(redirectUri),
           clientSecret: Boolean(
-            process.env.TIKTOK_CLIENT_SECRET,
+            process.env.client_secret,
           ),
         },
       },
