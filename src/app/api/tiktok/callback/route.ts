@@ -59,7 +59,7 @@ export async function GET(
   }
 
   const clientKey =
-    process.env.TIKTOK_CLIENT_KEY;
+    process.env.client_key;
 
   const clientSecret =
     process.env.TIKTOK_CLIENT_SECRET;
