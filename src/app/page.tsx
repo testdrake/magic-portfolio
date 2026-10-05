@@ -10,6 +10,7 @@ import {
 } from "@once-ui-system/core";
 import { baseURL, home, person } from "@/resources";
 import { getTikTokData } from "@/utils/tiktok";
+import TikTokStats from "@/components/TikTokStats";
 
 const tiktokUrl = "https://www.tiktok.com/@sheluvsdrak3";
 const youtubeUrl =
@@ -132,116 +133,7 @@ export default async function Home() {
         </Row>
 
         {/* CREATOR STATS */}
-        <Column fillWidth gap="m">
-          <Row
-            fillWidth
-            horizontal="between"
-            vertical="center"
-            s={{
-              direction: "column",
-              align: "start",
-              gap: "s",
-            }}
-          >
-            <Column gap="4">
-              <Text
-                variant="label-default-s"
-                onBackground="brand-strong"
-              >
-                TIKTOK
-              </Text>
-
-              <Heading
-                as="h2"
-                variant="display-strong-m"
-                wrap="balance"
-              >
-                Live stats
-              </Heading>
-            </Column>
-
-            <Text
-              variant="body-default-s"
-              onBackground="neutral-weak"
-            >
-              ● Live from TikTok
-            </Text>
-          </Row>
-
-          <Row
-            fillWidth
-            border="neutral-alpha-medium"
-            borderStyle="solid"
-            borderWidth={1}
-            radius="l"
-            padding="l"
-            gap="l"
-            s={{
-              direction: "column",
-              gap: "m",
-            }}
-          >
-            <Column flex={1} gap="4">
-              <Text
-                variant="label-default-s"
-                onBackground="neutral-weak"
-              >
-                FOLLOWERS
-              </Text>
-
-              <Text variant="display-strong-m">
-                {tiktok.followers !== undefined
-                  ? tiktok.followers.toLocaleString()
-                  : "—"}
-              </Text>
-            </Column>
-
-            <Column flex={1} gap="4">
-              <Text
-                variant="label-default-s"
-                onBackground="neutral-weak"
-              >
-                LIKES
-              </Text>
-
-              <Text variant="display-strong-m">
-                {tiktok.likes !== undefined
-                  ? tiktok.likes.toLocaleString()
-                  : "—"}
-              </Text>
-            </Column>
-
-            <Column flex={1} gap="4">
-              <Text
-                variant="label-default-s"
-                onBackground="neutral-weak"
-              >
-                FOLLOWING
-              </Text>
-
-              <Text variant="display-strong-m">
-                {tiktok.following !== undefined
-                  ? tiktok.following.toLocaleString()
-                  : "—"}
-              </Text>
-            </Column>
-
-            <Column flex={1} gap="4">
-              <Text
-                variant="label-default-s"
-                onBackground="neutral-weak"
-              >
-                VIDEOS
-              </Text>
-
-              <Text variant="display-strong-m">
-                {tiktok.videos !== undefined
-                  ? tiktok.videos.toLocaleString()
-                  : "—"}
-              </Text>
-            </Column>
-          </Row>
-        </Column>
+        <TikTokStats />
 
         {/* LATEST TIKTOK */}
         <Column fillWidth gap="m">
