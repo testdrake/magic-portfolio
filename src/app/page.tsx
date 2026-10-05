@@ -1,9 +1,20 @@
-import { Button, Column, Heading, Line, Media, Row, Schema, Text } from "@once-ui-system/core";
+```tsx
+import {
+  Button,
+  Column,
+  Heading,
+  Line,
+  Media,
+  Row,
+  Schema,
+  Text,
+} from "@once-ui-system/core";
 import { baseURL, home, person, social } from "@/resources";
 import { getTikTokData } from "@/utils/tiktok";
 
 const tiktokUrl = "https://www.tiktok.com/@sheluvsdrak3";
 const youtubeUrl = "https://www.youtube.com/channel/@sheluvsdrak3";
+const instagramUrl = "https://www.instagram.com/sheluvsdrak3/";
 
 export default async function Home() {
   const tiktok = await getTikTokData();
@@ -25,25 +36,50 @@ export default async function Home() {
         }}
       />
 
-      <Column maxWidth="m" fillWidth paddingX="l" gap="xl" paddingY="l">
+      <Column
+        maxWidth="m"
+        fillWidth
+        paddingX="l"
+        paddingY="l"
+        gap="xl"
+      >
+        {/* HERO */}
         <Row
           fillWidth
           gap="xl"
           vertical="center"
-          s={{ direction: "column", gap: "l" }}
+          s={{
+            direction: "column",
+            gap: "l",
+          }}
         >
-          <Column flex={1} gap="m">
-            <Text variant="label-default-s" onBackground="brand-strong">
+          <Column
+            flex={1}
+            gap="m"
+            paddingY="l"
+            s={{
+              paddingY: "0",
+            }}
+          >
+            <Text
+              variant="label-default-s"
+              onBackground="brand-strong"
+            >
               @sheluvsdrak3
             </Text>
 
-            <Heading variant="display-strong-xl" wrap="balance">
+            <Heading
+              as="h1"
+              variant="display-strong-xl"
+              wrap="balance"
+            >
               DrakeShi🍃
             </Heading>
 
             <Text
               variant="heading-default-l"
               onBackground="neutral-weak"
+              wrap="balance"
             >
               Digital Content Creator & Videographer
             </Text>
@@ -52,17 +88,26 @@ export default async function Home() {
               variant="body-default-l"
               onBackground="neutral-weak"
               wrap="balance"
+              maxWidth="s"
             >
-              Relatable short-form content built around humor, personality, and
-              everyday moments.
+              Creating relatable short-form content built around humor,
+              personality, and everyday moments.
             </Text>
 
-            <Row gap="12" wrap>
-              <Button href={tiktokUrl} variant="primary" arrowIcon>
+            <Row gap="12" wrap marginTop="s">
+              <Button
+                href={tiktokUrl}
+                variant="primary"
+                arrowIcon
+              >
                 TikTok
               </Button>
 
-              <Button href={youtubeUrl} variant="secondary" arrowIcon>
+              <Button
+                href={youtubeUrl}
+                variant="secondary"
+                arrowIcon
+              >
                 YouTube
               </Button>
             </Row>
@@ -72,7 +117,7 @@ export default async function Home() {
             flex={1}
             fillWidth
             aspectRatio="1/1"
-            maxHeight={420}
+            maxHeight={440}
             radius="xl"
             overflow="hidden"
             background="brand-alpha-weak"
@@ -86,67 +131,86 @@ export default async function Home() {
           </Column>
         </Row>
 
+        {/* CREATOR STATS */}
         <Row
           fillWidth
           border="neutral-alpha-medium"
           borderStyle="solid"
           borderWidth={1}
           radius="l"
-          padding="m"
+          padding="l"
           gap="l"
-          wrap
-          s={{ direction: "column", gap: "m" }}
+          s={{
+            direction: "column",
+            gap: "l",
+          }}
         >
+          <Column flex={1} gap="4">
+            <Text
+              variant="label-default-s"
+              onBackground="brand-strong"
+            >
+              TIKTOK
+            </Text>
+
+            <Text variant="heading-strong-l">
+              @sheluvsdrak3
+            </Text>
+
+            <Text
+              variant="body-default-s"
+              onBackground="neutral-weak"
+            >
+              Official TikTok profile
+            </Text>
+          </Column>
+
           {tiktok.profile ? (
-            <>
-              <Column flex={1}>
-                <Text
-                  variant="label-default-s"
-                  onBackground="neutral-weak"
-                >
-                  TIKTOK
-                </Text>
-                <Text variant="heading-strong-m">
-                  @{tiktok.profile.username}
-                </Text>
-              </Column>
-
-              <Column flex={1}>
-                <Text
-                  variant="label-default-s"
-                  onBackground="neutral-weak"
-                >
-                  PROFILE
-                </Text>
-                <Text variant="heading-strong-m">
-                  {tiktok.profile.displayName}
-                </Text>
-              </Column>
-            </>
-          ) : (
-            <Column fillWidth>
-              <Text variant="heading-strong-m">TikTok</Text>
-              <Text onBackground="neutral-weak">
-                @sheluvsdrak3
-              </Text>
-            </Column>
-          )}
-
-          {video?.viewCount !== undefined && (
-            <Column flex={1}>
+            <Column flex={1} gap="4">
               <Text
                 variant="label-default-s"
                 onBackground="neutral-weak"
               >
-                VIEWS
+                PROFILE
               </Text>
-              <Text variant="heading-strong-m">
-                {video.viewCount.toLocaleString()}
+
+              <Text variant="heading-strong-l">
+                {tiktok.profile.displayName}
+              </Text>
+
+              <Text
+                variant="body-default-s"
+                onBackground="neutral-weak"
+              >
+                DrakeShi🍃
               </Text>
             </Column>
-          )}
+          ) : null}
+
+          {video?.viewCount !== undefined ? (
+            <Column flex={1} gap="4">
+              <Text
+                variant="label-default-s"
+                onBackground="neutral-weak"
+              >
+                LATEST VIEWS
+              </Text>
+
+              <Text variant="heading-strong-l">
+                {video.viewCount.toLocaleString()}
+              </Text>
+
+              <Text
+                variant="body-default-s"
+                onBackground="neutral-weak"
+              >
+                On the latest available video
+              </Text>
+            </Column>
+          ) : null}
         </Row>
 
+        {/* LATEST TIKTOK */}
         <Column fillWidth gap="m">
           <Column gap="8">
             <Text
@@ -156,8 +220,12 @@ export default async function Home() {
               LATEST ON TIKTOK
             </Text>
 
-            <Heading as="h2" variant="display-strong-m">
-              Latest on TikTok
+            <Heading
+              as="h2"
+              variant="display-strong-m"
+              wrap="balance"
+            >
+              Latest video
             </Heading>
           </Column>
 
@@ -168,7 +236,10 @@ export default async function Home() {
               background="neutral-alpha-weak"
               radius="l"
               padding="l"
-              s={{ direction: "column", gap: "m" }}
+              s={{
+                direction: "column",
+                gap: "l",
+              }}
             >
               <Column
                 flex={1}
@@ -179,18 +250,32 @@ export default async function Home() {
               >
                 <Media
                   src={video.coverImageUrl ?? person.avatar}
-                  alt={video.description ?? "Latest DrakeShi TikTok"}
+                  alt={
+                    video.description ??
+                    "Latest DrakeShi TikTok video"
+                  }
                   fill
                   sizes="(max-width: 768px) 100vw, 45vw"
                 />
               </Column>
 
-              <Column flex={1} gap="m" vertical="center">
-                <Text variant="body-default-l">
-                  {video.description ?? "Latest DrakeShi video"}
+              <Column
+                flex={1}
+                gap="m"
+                vertical="center"
+              >
+                <Text
+                  variant="heading-strong-m"
+                  wrap="balance"
+                >
+                  {video.description ??
+                    "Latest DrakeShi video"}
                 </Text>
 
-                <Text onBackground="neutral-weak">
+                <Text
+                  variant="body-default-s"
+                  onBackground="neutral-weak"
+                >
                   {[
                     video.viewCount !== undefined &&
                       `${video.viewCount.toLocaleString()} views`,
@@ -203,37 +288,56 @@ export default async function Home() {
                     .join(" • ")}
                 </Text>
 
-                <Button
-                  href={video.shareUrl ?? tiktokUrl}
-                  variant="primary"
-                  arrowIcon
-                >
-                  Watch on TikTok
-                </Button>
+                <Row gap="12" wrap>
+                  <Button
+                    href={video.shareUrl ?? tiktokUrl}
+                    variant="primary"
+                    arrowIcon
+                  >
+                    Watch on TikTok
+                  </Button>
+                </Row>
               </Column>
             </Row>
           ) : (
-            <Column
+            <Row
               fillWidth
-              gap="m"
               background="neutral-alpha-weak"
               radius="l"
               padding="l"
+              gap="l"
+              vertical="center"
+              s={{
+                direction: "column",
+                align: "start",
+              }}
             >
-              <Text
-                variant="body-default-l"
-                onBackground="neutral-weak"
-              >
-                Follow @sheluvsdrak3 on TikTok for the latest videos.
-              </Text>
+              <Column flex={1} gap="s">
+                <Text variant="heading-strong-m">
+                  Follow DrakeShi on TikTok
+                </Text>
 
-              <Button href={tiktokUrl} variant="primary" arrowIcon>
+                <Text
+                  variant="body-default-s"
+                  onBackground="neutral-weak"
+                >
+                  The latest video will appear here when TikTok
+                  data is available.
+                </Text>
+              </Column>
+
+              <Button
+                href={tiktokUrl}
+                variant="primary"
+                arrowIcon
+              >
                 Open TikTok
               </Button>
-            </Column>
+            </Row>
           )}
         </Column>
 
+        {/* FEATURED */}
         <Column fillWidth gap="m">
           <Line />
 
@@ -244,29 +348,143 @@ export default async function Home() {
             FEATURED CONTENT
           </Text>
 
-          <Heading as="h2" variant="display-strong-m">
+          <Heading
+            as="h2"
+            variant="display-strong-m"
+            wrap="balance"
+          >
             DrakeShi on TikTok
           </Heading>
 
           <Text
             variant="body-default-l"
             onBackground="neutral-weak"
+            wrap="balance"
+            maxWidth="m"
           >
-            A look at DrakeShi's short-form content and creator presence on
-            TikTok.
+            Explore featured content from DrakeShi🍃 and
+            @sheluvsdrak3.
           </Text>
 
           <Row>
             <Button
-              href={tiktokUrl}
+              href="/work/featured-tiktok"
               variant="secondary"
               arrowIcon
             >
-              View on TikTok
+              Explore featured content
             </Button>
           </Row>
         </Column>
 
+        {/* ABOUT */}
+        <Row
+          fillWidth
+          gap="xl"
+          vertical="center"
+          s={{
+            direction: "column",
+            gap: "l",
+          }}
+        >
+          <Column flex={1} gap="m">
+            <Text
+              variant="label-default-s"
+              onBackground="brand-strong"
+            >
+              ABOUT DRAKESHI
+            </Text>
+
+            <Heading
+              as="h2"
+              variant="display-strong-m"
+              wrap="balance"
+            >
+              Creator, personality, and storyteller.
+            </Heading>
+          </Column>
+
+          <Column flex={1} gap="m">
+            <Text
+              variant="body-default-l"
+              onBackground="neutral-weak"
+              wrap="balance"
+            >
+              DrakeShi🍃 is the creator identity of Drake
+              McMahan, known online as @sheluvsdrak3. His
+              content focuses on relatable humor, personality,
+              everyday moments, and entertaining short-form
+              videos.
+            </Text>
+
+            <Row gap="12" wrap>
+              <Button
+                href="/about"
+                variant="secondary"
+                arrowIcon
+              >
+                About DrakeShi
+              </Button>
+            </Row>
+          </Column>
+        </Row>
+
+        {/* SOCIAL LINKS */}
+        <Column fillWidth gap="m">
+          <Line />
+
+          <Row
+            fillWidth
+            horizontal="between"
+            vertical="center"
+            s={{
+              direction: "column",
+              align: "start",
+              gap: "m",
+            }}
+          >
+            <Column gap="4">
+              <Text variant="heading-strong-m">
+                Follow DrakeShi
+              </Text>
+
+              <Text
+                variant="body-default-s"
+                onBackground="neutral-weak"
+              >
+                @sheluvsdrak3
+              </Text>
+            </Column>
+
+            <Row gap="8" wrap>
+              <Button
+                href={tiktokUrl}
+                variant="tertiary"
+                size="s"
+              >
+                TikTok
+              </Button>
+
+              <Button
+                href={youtubeUrl}
+                variant="tertiary"
+                size="s"
+              >
+                YouTube
+              </Button>
+
+              <Button
+                href={instagramUrl}
+                variant="tertiary"
+                size="s"
+              >
+                Instagram
+              </Button>
+            </Row>
+          </Row>
+        </Column>
+
+        {/* FOOTER */}
         <Row
           fillWidth
           horizontal="between"
@@ -275,7 +493,7 @@ export default async function Home() {
           s={{
             direction: "column",
             align: "start",
-            gap: "m",
+            gap: "s",
           }}
         >
           <Text
@@ -285,25 +503,12 @@ export default async function Home() {
             DrakeShi🍃 · @sheluvsdrak3
           </Text>
 
-          <Row gap="8" wrap>
-            {social
-              .filter((item) =>
-                ["TikTok", "YouTube", "Instagram"].includes(item.name),
-              )
-              .map(
-                (item) =>
-                  item.link && (
-                    <Button
-                      key={item.name}
-                      href={item.link}
-                      variant="tertiary"
-                      size="s"
-                    >
-                      {item.name}
-                    </Button>
-                  ),
-              )}
-          </Row>
+          <Text
+            variant="body-default-s"
+            onBackground="neutral-weak"
+          >
+            © 2026 DrakeShi
+          </Text>
         </Row>
       </Column>
     </Column>
@@ -316,3 +521,4 @@ export const metadata = {
   title: home.title,
   description: home.description,
 };
+```
