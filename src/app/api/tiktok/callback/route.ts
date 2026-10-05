@@ -128,10 +128,21 @@ export async function GET(
     success: true,
     message:
       "TikTok authorization succeeded.",
+
     openId: data.open_id,
+
     scope: data.scope,
-    expiresIn: data.expires_in,
+
+    expiresIn:
+      data.expires_in,
+
     refreshExpiresIn:
       data.refresh_expires_in,
+
+    accessToken:
+      data.access_token,
+
+    refreshToken:
+      data.refresh_token,
   });
 }
