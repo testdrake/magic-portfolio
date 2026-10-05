@@ -17,7 +17,7 @@ type TikTokData = {
   followers?: number;
   following?: number;
   likes?: number;
-  videos?: number;
+  videoCount?: number;
 };
 
 type AnimatedNumberProps = {
@@ -29,17 +29,28 @@ function AnimatedNumber({
   value,
   duration = 900,
 }: AnimatedNumberProps) {
-  const [displayValue, setDisplayValue] = useState(value ?? 0);
+  const [displayValue, setDisplayValue] = useState(
+    value ?? 0,
+  );
+
   const previousValue = useRef(value ?? 0);
 
   useEffect(() => {
-    if (value === undefined) return;
+    if (value === undefined || !Number.isFinite(value)) {
+      return;
+    }
 
-    const startValue = previousValue.current;
+    const startValue = Number.isFinite(
+      previousValue.current,
+    )
+      ? previousValue.current
+      : 0;
+
     const endValue = value;
 
     if (startValue === endValue) {
       setDisplayValue(endValue);
+      previousValue.current = endValue;
       return;
     }
 
@@ -48,14 +59,18 @@ function AnimatedNumber({
 
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
+      const progress = Math.min(
+        elapsed / duration,
+        1,
+      );
 
       const easedProgress =
         1 - Math.pow(1 - progress, 3);
 
       const currentValue = Math.round(
         startValue +
-          (endValue - startValue) * easedProgress,
+          (endValue - startValue) *
+            easedProgress,
       );
 
       setDisplayValue(currentValue);
@@ -68,14 +83,18 @@ function AnimatedNumber({
       }
     };
 
-    animationFrame = requestAnimationFrame(animate);
+    animationFrame =
+      requestAnimationFrame(animate);
 
     return () => {
       cancelAnimationFrame(animationFrame);
     };
   }, [value, duration]);
 
-  if (value === undefined) {
+  if (
+    value === undefined ||
+    !Number.isFinite(value)
+  ) {
     return <>—</>;
   }
 
@@ -93,7 +112,8 @@ function StatCard({
   value,
   delay,
 }: StatCardProps) {
-  const [active, setActive] = useState(false);
+  const [active, setActive] =
+    useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -131,9 +151,9 @@ function StatCard({
 }
 
 export default function TikTokStats() {
-  const [stats, setStats] = useState<TikTokData | null>(
-    null,
-  );
+  const [stats, setStats] =
+    useState<TikTokData | null>(null);
+
   const [isRefreshing, setIsRefreshing] =
     useState(false);
 
@@ -141,13 +161,19 @@ export default function TikTokStats() {
     try {
       setIsRefreshing(true);
 
-      const response = await fetch("/api/tiktok", {
-        cache: "no-store",
-      });
+      const response = await fetch(
+        "/api/tiktok",
+        {
+          cache: "no-store",
+        },
+      );
 
-      if (!response.ok) return;
+      if (!response.ok) {
+        return;
+      }
 
-      const data = (await response.json()) as TikTokData;
+      const data =
+        (await response.json()) as TikTokData;
 
       setStats(data);
     } catch {
@@ -162,7 +188,10 @@ export default function TikTokStats() {
   useEffect(() => {
     loadStats();
 
-    const interval = setInterval(loadStats, 30000);
+    const interval = setInterval(
+      loadStats,
+      30000,
+    );
 
     return () => clearInterval(interval);
   }, []);
@@ -175,6 +204,7 @@ export default function TikTokStats() {
         position: "relative",
       }}
     >
+      {/* HEADER */}
       <Row
         fillWidth
         horizontal="between"
@@ -206,8 +236,11 @@ export default function TikTokStats() {
           gap="8"
           vertical="center"
           style={{
-            opacity: stats?.available ? 1 : 0.5,
-            transition: "opacity 400ms ease",
+            opacity: stats?.available
+              ? 1
+              : 0.5,
+            transition:
+              "opacity 400ms ease",
           }}
         >
           <span
@@ -232,6 +265,7 @@ export default function TikTokStats() {
         </Row>
       </Row>
 
+      {/* STATS */}
       <Row
         fillWidth
         border="neutral-alpha-medium"
@@ -284,7 +318,7 @@ export default function TikTokStats() {
 
         <StatCard
           label="VIDEOS"
-          value={stats?.videos}
+          value={stats?.videoCount}
           delay="300"
         />
       </Row>
