@@ -52,157 +52,136 @@ export default function About() {
 
       {/* HERO */}
 
-      <Row
+      <Column
         fillWidth
-        gap="xl"
-        vertical="center"
-        s={{
-          direction: "column",
-          gap: "l",
-          vertical: "start",
-        }}
+        gap="m"
+        paddingY="l"
       >
-        <Column
-          flex={6}
-          gap="m"
-          paddingY="l"
-          s={{
-            paddingY: "0",
-            fillWidth: true,
-          }}
+        <Text
+          variant="label-default-s"
+          onBackground="brand-strong"
         >
-          <Row
-            gap="s"
-            vertical="center"
-          >
-            <Avatar
-              src={person.avatar}
-              size="m"
-            />
+          THE CREATOR
+        </Text>
 
-            <Text
-              variant="label-default-s"
-              onBackground="brand-strong"
-            >
-              THE CREATOR
-            </Text>
-          </Row>
-
-          <Heading
-            as="h1"
-            variant="display-strong-xl"
-            wrap="balance"
-          >
-            About DrakeShi🍃
-          </Heading>
-
-          <Text
-            variant="heading-default-l"
-            onBackground="neutral-weak"
-            wrap="balance"
-          >
-            Drake McMahan · @sheluvsdrak3
-          </Text>
-
-          <Text
-            variant="body-default-l"
-            onBackground="neutral-weak"
-            wrap="balance"
-          >
-            Digital content creator and videographer creating
-            relatable, personality-driven content built around
-            humor, personality, and everyday moments.
-          </Text>
-
-          <Row
-            gap="8"
-            wrap
-            marginTop="s"
-          >
-            {social.map(
-              (item) =>
-                item.link && (
-                  <Button
-                    key={item.name}
-                    href={item.link}
-                    variant="secondary"
-                    size="s"
-                  >
-                    {item.name}
-                  </Button>
-                ),
-            )}
-          </Row>
-        </Column>
-
-        <Column
-          flex={4}
-          fillWidth
-          aspectRatio="1/1"
-          maxHeight={440}
-          radius="xl"
-          overflow="hidden"
-          background="brand-alpha-weak"
-          s={{
-            maxHeight: 360,
-          }}
+        <Heading
+          as="h1"
+          variant="display-strong-xl"
+          wrap="balance"
         >
-          <Media
-            src={person.avatar}
-            alt="DrakeShi, digital content creator and videographer"
-            fill
-            sizes="(max-width: 768px) 100vw, 40vw"
-          />
-        </Column>
-      </Row>
+          About DrakeShi🍃
+        </Heading>
+
+        <Text
+          variant="heading-default-l"
+          onBackground="neutral-weak"
+          wrap="balance"
+        >
+          Drake McMahan · @sheluvsdrak3
+        </Text>
+
+        <Text
+          variant="body-default-l"
+          onBackground="neutral-weak"
+          wrap="balance"
+        >
+          Digital content creator and videographer creating
+          relatable, personality-driven content built around
+          humor, personality, and everyday moments.
+        </Text>
+
+        <Row
+          gap="8"
+          wrap
+          marginTop="s"
+        >
+          {social.map(
+            (item) =>
+              item.link && (
+                <Button
+                  key={item.name}
+                  href={item.link}
+                  variant="secondary"
+                  size="s"
+                >
+                  {item.name}
+                </Button>
+              ),
+          )}
+        </Row>
+      </Column>
 
       {/* CREATOR PROFILE */}
 
       <Column
         fillWidth
         gap="m"
+        padding="l"
+        border="neutral-alpha-medium"
+        borderStyle="solid"
+        borderWidth={1}
+        radius="l"
+        style={{
+          position: "relative",
+          overflow: "hidden",
+        }}
       >
-        <Line />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            background:
+              "radial-gradient(circle at 50% 120%, rgba(0, 187, 255, 0.10), transparent 55%)",
+          }}
+        />
 
-        <Column
-          gap="m"
-          maxWidth="m"
+        <Text
+          variant="label-default-s"
+          onBackground="brand-strong"
+          style={{
+            position: "relative",
+          }}
         >
-          <Text
-            variant="label-default-s"
-            onBackground="brand-strong"
-          >
-            DRAKESHI🍃
-          </Text>
+          DRAKESHI🍃
+        </Text>
 
-          <Heading
-            as="h2"
-            variant="display-strong-m"
-            wrap="balance"
-          >
-            A personality-first creator.
-          </Heading>
+        <Heading
+          as="h2"
+          variant="display-strong-m"
+          wrap="balance"
+          style={{
+            position: "relative",
+          }}
+        >
+          A personality-first creator.
+        </Heading>
 
-          <Text
-            variant="body-default-l"
-            onBackground="neutral-weak"
-            wrap="balance"
-          >
-            DrakeShi🍃 is the online creator identity of Drake
-            McMahan, known across social platforms as
-            @sheluvsdrak3.
-          </Text>
+        <Text
+          variant="body-default-l"
+          onBackground="neutral-weak"
+          wrap="balance"
+          style={{
+            position: "relative",
+          }}
+        >
+          DrakeShi🍃 is the online creator identity of Drake
+          McMahan, known across social platforms as
+          @sheluvsdrak3.
+        </Text>
 
-          <Text
-            variant="body-default-l"
-            onBackground="neutral-weak"
-            wrap="balance"
-          >
-            His content centers around relatable humor,
-            situational comedy, everyday moments, personality,
-            and lifestyle-driven short-form content.
-          </Text>
-        </Column>
+        <Text
+          variant="body-default-l"
+          onBackground="neutral-weak"
+          wrap="balance"
+          style={{
+            position: "relative",
+          }}
+        >
+          His content centers around relatable humor,
+          situational comedy, everyday moments, personality,
+          and lifestyle-driven short-form content.
+        </Text>
       </Column>
 
       {/* THE STORY */}
@@ -223,21 +202,7 @@ export default function About() {
           borderStyle="solid"
           borderWidth={1}
           radius="l"
-          style={{
-            position: "relative",
-            overflow: "hidden",
-          }}
         >
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              pointerEvents: "none",
-              background:
-                "radial-gradient(circle at 0% 100%, rgba(0, 187, 255, 0.10), transparent 55%)",
-            }}
-          />
-
           <Text
             variant="label-default-s"
             onBackground="brand-strong"
@@ -264,6 +229,7 @@ export default function About() {
           <Text
             variant="body-default-l"
             onBackground="neutral-weak"
+            wrap="balance"
           >
             DrakeShi started as an online identity built around
             sharing entertaining moments and connecting with
@@ -273,6 +239,7 @@ export default function About() {
           <Text
             variant="body-default-l"
             onBackground="neutral-weak"
+            wrap="balance"
           >
             Over time, that identity grew into a creator brand
             centered around humor, personality, and relatable
@@ -282,89 +249,104 @@ export default function About() {
           <Text
             variant="body-default-m"
             onBackground="neutral-weak"
-          >
-            The goal is simple: create content that feels natural,
-            entertaining, and worth sharing.
-          </Text>
-        </Column>
-      </Row>
-
-      {/* FOCUS */}
-
-      <Row
-        fillWidth
-        gap="xl"
-        vertical="center"
-        s={{
-          direction: "column",
-          gap: "l",
-        }}
-      >
-        <Column
-          flex={6}
-          minHeight={420}
-          radius="xl"
-          overflow="hidden"
-          background="brand-alpha-weak"
-          s={{
-            minHeight: 300,
-          }}
-        >
-          <Media
-            src="/images/gallery/horizontal-3.jpg"
-            alt="DrakeShi🍃 creator gallery"
-            fill
-            sizes="(max-width: 768px) 100vw, 60vw"
-          />
-        </Column>
-
-        <Column
-          flex={4}
-          gap="m"
-        >
-          <Text
-            variant="label-default-s"
-            onBackground="brand-strong"
-          >
-            THE FOCUS
-          </Text>
-
-          <Heading
-            as="h2"
-            variant="display-strong-m"
             wrap="balance"
           >
-            Everyday moments, turned up.
-          </Heading>
-
-          <Text
-            variant="body-default-l"
-            onBackground="neutral-weak"
-          >
-            From a quick joke to a full story, DrakeShi🍃 brings
-            an unmistakable point of view to the scroll.
+            The goal is simple: create content that feels
+            natural, entertaining, and worth sharing.
           </Text>
-
-          <Text
-            variant="body-default-l"
-            onBackground="neutral-weak"
-          >
-            The content stays personal, casual, and
-            personality-driven while always looking for a new
-            way to entertain.
-          </Text>
-
-          <Row marginTop="s">
-            <Button
-              href="/gallery"
-              variant="secondary"
-              arrowIcon
-            >
-              Explore the gallery
-            </Button>
-          </Row>
         </Column>
       </Row>
+
+      {/* THE FOCUS */}
+
+      <Column
+        fillWidth
+        gap="l"
+      >
+        <Line />
+
+        <Row
+          fillWidth
+          gap="xl"
+          vertical="center"
+          s={{
+            direction: "column",
+            gap: "l",
+          }}
+        >
+          <Column
+            flex={6}
+            minHeight={420}
+            radius="xl"
+            overflow="hidden"
+            background="brand-alpha-weak"
+            s={{
+              minHeight: 300,
+            }}
+          >
+            <Media
+              src="/images/gallery/horizontal-3.jpg"
+              alt="DrakeShi🍃 creator gallery"
+              fill
+              sizes="(max-width: 768px) 100vw, 60vw"
+            />
+          </Column>
+
+          <Column
+            flex={4}
+            gap="m"
+          >
+            <Text
+              variant="label-default-s"
+              onBackground="brand-strong"
+            >
+              THE FOCUS
+            </Text>
+
+            <Heading
+              as="h2"
+              variant="display-strong-m"
+              wrap="balance"
+            >
+              Everyday moments, turned up.
+            </Heading>
+
+            <Column
+              gap="m"
+            >
+              <Text
+                variant="body-default-l"
+                onBackground="neutral-weak"
+                wrap="balance"
+              >
+                From a quick joke to a full story, DrakeShi🍃
+                brings an unmistakable point of view to the
+                scroll.
+              </Text>
+
+              <Text
+                variant="body-default-l"
+                onBackground="neutral-weak"
+                wrap="balance"
+              >
+                The content stays personal, casual, and
+                personality-driven while always looking for a
+                new way to entertain.
+              </Text>
+            </Column>
+
+            <Row marginTop="s">
+              <Button
+                href="/gallery"
+                variant="secondary"
+                arrowIcon
+              >
+                Explore the gallery
+              </Button>
+            </Row>
+          </Column>
+        </Row>
+      </Column>
 
       {/* CONTENT STYLE */}
 
@@ -455,6 +437,7 @@ export default function About() {
             <Text
               variant="body-default-s"
               onBackground="neutral-weak"
+              wrap="balance"
             >
               Everyday situations and experiences turned into
               content viewers can recognize themselves in.
@@ -486,6 +469,7 @@ export default function About() {
             <Text
               variant="body-default-s"
               onBackground="neutral-weak"
+              wrap="balance"
             >
               Comedy, reactions, and unexpected moments built
               around personality and timing.
@@ -517,6 +501,7 @@ export default function About() {
             <Text
               variant="body-default-s"
               onBackground="neutral-weak"
+              wrap="balance"
             >
               Content where the creator himself is part of what
               makes each piece recognizable.
@@ -690,3 +675,5 @@ export default function About() {
     </Column>
   );
 }
+
+The **top avatar/image is completely removed**, while the `horizontal-3.jpg` image remains in **THE FOCUS**. I also separated the two focus paragraphs into their own `Column`, so they won't run together anymore.
