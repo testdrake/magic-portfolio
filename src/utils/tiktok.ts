@@ -1,4 +1,33 @@
-import type { TikTokData } from "./types";
+export type TikTokProfile = {
+  username: string;
+  displayName?: string;
+};
+
+export type TikTokVideo = {
+  id: string;
+  shareUrl?: string;
+  embedLink?: string;
+  description?: string;
+  title?: string;
+  coverImageUrl?: string;
+  publishedAt?: string;
+  viewCount?: number;
+  likeCount?: number;
+  commentCount?: number;
+  shareCount?: number;
+};
+
+export type TikTokData = {
+  available: boolean;
+  profile?: TikTokProfile;
+  latestVideo?: TikTokVideo;
+  videos?: TikTokVideo[];
+  followers?: number;
+  following?: number;
+  likes?: number;
+  videoCount?: number;
+  updatedAt?: string;
+};
 
 const USERNAME = "sheluvsdrak3";
 
@@ -6,7 +35,6 @@ const STATS_URL =
   "https://tiktok-api.tokcounter.com/user/stats/7254124266240951342";
 
 type TokCounterResponse = {
-  cache?: boolean;
   success?: boolean;
   followerCount?: number;
   likeCount?: number;
@@ -14,15 +42,31 @@ type TokCounterResponse = {
   videoCount?: number;
 };
 
-export async function getTikTokData(): Promise<TikTokData> {
-  const profile = {
-    username: USERNAME,
-    displayName: "DrakeShi🍃",
+type TikTokVideoResponse = {
+  data?: {
+    videos?: Array<{
+      id: string;
+      create_time?: number;
+      title?: string;
+      video_description?: string;
+      cover_image_url?: string;
+      share_url?: string;
+      embed_link?: string;
+      view_count?: number;
+      like_count?: number;
+      comment_count?: number;
+      share_count?: number;
+    }>;
   };
+  error?: {
+    code?: string;
+    message?: string;
+  };
+};
 
+async function getTokCounterStats() {
   try {
     const response = await fetch(STATS_URL, {
-      method: "GET",
       headers: {
         Accept: "application/json",
         "User-Agent":
@@ -32,35 +76,103 @@ export async function getTikTokData(): Promise<TikTokData> {
     });
 
     if (!response.ok) {
-      return {
-        available: false,
-        profile,
-      };
+      return null;
     }
 
     const data =
       (await response.json()) as TokCounterResponse;
 
     if (data.success !== true) {
-      return {
-        available: false,
-        profile,
-      };
+      return null;
     }
 
     return {
-      available: true,
-      profile,
       followers: data.followerCount,
       likes: data.likeCount,
       following: data.followingCount,
-      videos: data.videoCount,
-      updatedAt: new Date().toISOString(),
+      videoCount: data.videoCount,
     };
   } catch {
-    return {
-      available: false,
-      profile,
-    };
+    return null;
   }
+}
+
+async function getTikTokVideos(): Promise<TikTokVideo[]> {
+  const accessToken = process.env.TIKTOK_ACCESS_TOKEN;
+
+  if (!accessToken) {
+    return [];
+  }
+
+  try {
+    const response = await fetch(
+      "https://open.tiktokapis.com/v2/video/list/?fields=id,create_time,title,video_description,cover_image_url,share_url,embed_link,view_count,like_count,comment_count,share_count",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          max_count: 20,
+        }),
+        cache: "no-store",
+      },
+    );
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const data =
+      (await response.json()) as TikTokVideoResponse;
+
+    if (!data.data?.videos) {
+      return [];
+    }
+
+    return data.data.videos.map((video) => ({
+      id: video.id,
+      title: video.title,
+      description: video.video_description,
+      coverImageUrl: video.cover_image_url,
+      shareUrl: video.share_url,
+      embedLink: video.embed_link,
+      publishedAt: video.create_time
+        ? new Date(
+            video.create_time * 1000,
+          ).toISOString()
+        : undefined,
+      viewCount: video.view_count,
+      likeCount: video.like_count,
+      commentCount: video.comment_count,
+      shareCount: video.share_count,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export async function getTikTokData(): Promise<TikTokData> {
+  const profile: TikTokProfile = {
+    username: USERNAME,
+    displayName: "DrakeShi🍃",
+  };
+
+  const [stats, videos] = await Promise.all([
+    getTokCounterStats(),
+    getTikTokVideos(),
+  ]);
+
+  return {
+    available: Boolean(stats),
+    profile,
+    latestVideo: videos[0],
+    videos,
+    followers: stats?.followers,
+    likes: stats?.likes,
+    following: stats?.following,
+    videoCount: stats?.videoCount,
+    updatedAt: new Date().toISOString(),
+  };
 }
