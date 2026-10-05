@@ -62,7 +62,7 @@ export async function GET(
     process.env.client_key;
 
   const clientSecret =
-    process.env.TIKTOK_CLIENT_SECRET;
+    process.env.client_secret;
 
   const redirectUri =
     process.env.TIKTOK_REDIRECT_URI;
