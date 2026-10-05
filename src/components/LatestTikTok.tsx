@@ -1,3 +1,4 @@
+
 import {
   Button,
   Column,
@@ -11,19 +12,12 @@ type LatestTikTokProps = {
   video?: TikTokVideo;
 };
 
-const tiktokUrl =
-  "https://www.tiktok.com/@sheluvsdrak3";
+const tiktokUrl = "https://www.tiktok.com/@sheluvsdrak3";
+const linkMeUrl = "https://link.me/@sheluvsdrak3";
 
-const linkMeUrl =
-  "https://link.me/@sheluvsdrak3";
-
-export default function LatestTikTok({
-  video,
-}: LatestTikTokProps) {
+export default function LatestTikTok({ video }: LatestTikTokProps) {
   return (
     <Column fillWidth gap="l">
-      {/* SECTION HEADER */}
-
       <Row
         fillWidth
         horizontal="between"
@@ -75,11 +69,9 @@ export default function LatestTikTok({
             },
           }}
         >
-          {/* VIDEO */}
-
           <Column
-            flex={0.8}
             fillWidth
+            flex={1}
             horizontal="center"
             vertical="center"
             padding="l"
@@ -96,7 +88,7 @@ export default function LatestTikTok({
                 width: "100%",
                 maxWidth: "320px",
                 boxShadow:
-                  "0 24px 80px rgba(0, 187, 255, 0.12)",
+                  "0 20px 60px rgba(0, 187, 255, 0.10)",
               }}
             >
               <iframe
@@ -117,10 +109,8 @@ export default function LatestTikTok({
             </Column>
           </Column>
 
-          {/* INFORMATION */}
-
           <Column
-            flex={1.2}
+            flex={1}
             fillWidth
             padding="xl"
             gap="l"
@@ -149,8 +139,6 @@ export default function LatestTikTok({
                   "Latest DrakeShi video"}
               </Heading>
             </Column>
-
-            {/* STATS */}
 
             {(video.viewCount !== undefined ||
               video.likeCount !== undefined ||
@@ -215,11 +203,19 @@ export default function LatestTikTok({
               </Row>
             )}
 
-            {/* ACTIONS */}
+            <Text
+              variant="body-default-m"
+              onBackground="neutral-weak"
+              wrap="balance"
+            >
+              Watch the latest video from DrakeShi directly on the
+              site, or continue watching on TikTok.
+            </Text>
 
             <Row
               gap="12"
               wrap
+              marginTop="s"
             >
               <Button
                 href={video.shareUrl ?? tiktokUrl}
@@ -236,6 +232,27 @@ export default function LatestTikTok({
               >
                 All Links
               </Button>
+            </Row>
+
+            <Row
+              fillWidth
+              horizontal="between"
+              vertical="center"
+              marginTop="m"
+            >
+              <Text
+                variant="body-default-xs"
+                onBackground="neutral-weak"
+              >
+                DrakeShi🍃
+              </Text>
+
+              <Text
+                variant="body-default-xs"
+                onBackground="neutral-weak"
+              >
+                TikTok
+              </Text>
             </Row>
           </Column>
         </Row>
@@ -265,8 +282,8 @@ export default function LatestTikTok({
               variant="body-default-s"
               onBackground="neutral-weak"
             >
-              The latest video will appear here when
-              TikTok data is available.
+              The latest video will appear here when TikTok data is
+              available.
             </Text>
           </Column>
 
