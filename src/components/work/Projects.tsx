@@ -1,4 +1,4 @@
-```tsx
+
 import { getTikTokData } from "@/utils/tiktok";
 import { Column, Heading, Row, Text } from "@once-ui-system/core";
 
@@ -174,4 +174,4 @@ export async function Projects({ range }: ProjectsProps) {
     </Column>
   );
 }
-```
+
