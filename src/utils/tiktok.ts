@@ -74,9 +74,12 @@ function createHeaders(): Record<string, string> {
     .digest("hex");
 
   return {
-    Accept: "application/json",
+    Accept: "application/json, text/plain, */*",
     "User-Agent":
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+    Referer:
+      "https://livecounts.io/tiktok-live-follower-counter/sheluvsdrak3",
+    Origin: "https://livecounts.io",
     "x-ajay": ajay,
     "x-catto": catto,
     "x-midas": midas,
@@ -140,21 +143,21 @@ async function findUser(
 
   const users = normalizeUsers(data);
 
-  return (
-    users.find((user) => {
-      const usernames = [
-        user.username,
-        user.uniqueId,
-      ].filter(
-        (value): value is string => Boolean(value),
-      );
+  const exactMatch = users.find((user) => {
+    const usernames = [
+      user.username,
+      user.uniqueId,
+    ].filter(
+      (value): value is string => Boolean(value),
+    );
 
-      return usernames.some(
-        (value) =>
-          value.toLowerCase() === username.toLowerCase(),
-      );
-    }) ?? users[0] ?? null
-  );
+    return usernames.some(
+      (value) =>
+        value.toLowerCase() === username.toLowerCase(),
+    );
+  });
+
+  return exactMatch ?? users[0] ?? null;
 }
 
 async function getUserStats(
@@ -174,10 +177,19 @@ async function getUserStats(
 function toNumber(
   value: unknown,
 ): number | undefined {
-  return typeof value === "number" &&
-    Number.isFinite(value)
-    ? value
-    : undefined;
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    const parsed = Number(value);
+
+    if (Number.isFinite(parsed)) {
+      return parsed;
+    }
+  }
+
+  return undefined;
 }
 
 export async function getTikTokData(): Promise<TikTokData> {
