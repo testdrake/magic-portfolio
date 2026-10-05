@@ -3,7 +3,6 @@ import {
   Column,
   Heading,
   Line,
-  Media,
   Row,
   Schema,
   Text,
@@ -49,11 +48,16 @@ export default async function Home() {
       />
 
       <Column
-        maxWidth="m"
+        maxWidth="l"
         fillWidth
         paddingX="l"
         paddingY="l"
         gap="xl"
+        s={{
+          paddingX: "m",
+          paddingY: "m",
+          gap: "l",
+        }}
       >
         {/* HERO */}
 
@@ -64,6 +68,7 @@ export default async function Home() {
           s={{
             direction: "column",
             gap: "l",
+            vertical: "start",
           }}
         >
           <Column
@@ -72,6 +77,7 @@ export default async function Home() {
             paddingY="l"
             s={{
               paddingY: "0",
+              fillWidth: true,
             }}
           >
             <Text
@@ -134,21 +140,28 @@ export default async function Home() {
             flex={1}
             fillWidth
             aspectRatio="1/1"
-            maxHeight={440}
+            maxHeight={500}
             radius="xl"
             overflow="hidden"
             background="brand-alpha-weak"
+            s={{
+              maxHeight: 420,
+            }}
           >
-            <Media
+            <img
               src={person.avatar}
               alt="DrakeShi, digital content creator and videographer"
-              fill
-              sizes="(max-width: 768px) 100vw, 42vw"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+              }}
             />
           </Column>
         </Row>
 
-        {/* CREATOR STATS */}
+        {/* TIKTOK STATS */}
 
         <TikTokStats />
 
@@ -173,108 +186,75 @@ export default async function Home() {
             >
               Latest video
             </Heading>
+
+            <Text
+              variant="body-default-m"
+              onBackground="neutral-weak"
+              wrap="balance"
+            >
+              Watch the latest video from @sheluvsdrak3
+              directly on the site.
+            </Text>
           </Column>
 
           {video ? (
             <Row
               fillWidth
-              gap="l"
+              gap="xl"
               background="neutral-alpha-weak"
               radius="xl"
               padding="l"
+              vertical="center"
               s={{
                 direction: "column",
                 gap: "l",
+                padding: "m",
               }}
             >
-              {/* TIKTOK THUMBNAIL */}
+              {/* TIKTOK PLAYER */}
 
               <Column
-  flex={1}
-  aspectRatio="9/16"
-  maxHeight={520}
-  radius="l"
-  overflow="hidden"
-  background="page"
-  style={{
-    position: "relative",
-    boxShadow:
-      "0 0 45px rgba(0, 187, 255, 0.10)",
-  }}
->
-  {video.coverImageUrl ? (
-    <img
-      src={video.coverImageUrl}
-      alt={
-        video.description ??
-        "Latest DrakeShi TikTok video"
-      }
-      style={{
-        width: "100%",
-        height: "100%",
-        objectFit: "cover",
-        display: "block",
-      }}
-    />
-  ) : (
-    <Column
-      fillWidth
-      fillHeight
-      horizontal="center"
-      vertical="center"
-      gap="s"
-      padding="l"
-    >
-      <Text variant="heading-strong-m">
-        Latest TikTok
-      </Text>
-
-      <Text
-        variant="body-default-s"
-        onBackground="neutral-weak"
-      >
-        @sheluvsdrak3
-      </Text>
-    </Column>
-  )}
-
-  <Row
-    gap="8"
-    vertical="center"
-    style={{
-      position: "absolute",
-      top: "16px",
-      left: "16px",
-      zIndex: 2,
-      padding: "7px 11px",
-      borderRadius: "999px",
-      background: "rgba(6, 9, 19, 0.82)",
-      border:
-        "1px solid rgba(255,255,255,0.12)",
-      backdropFilter: "blur(10px)",
-    }}
-  >
-    <span
-      style={{
-        width: "7px",
-        height: "7px",
-        borderRadius: "50%",
-        background: "#00BBFF",
-        boxShadow:
-          "0 0 12px rgba(0, 187, 255, 0.8)",
-      }}
-    />
-
-    <Text variant="label-default-s">
-      TIKTOK
-    </Text>
-  </Row>
-</Column>
+                fillWidth
+                horizontal="center"
+                s={{
+                  flex: 1,
+                }}
+              >
+                <Column
+                  aspectRatio="9/16"
+                  radius="l"
+                  overflow="hidden"
+                  background="page"
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    maxWidth: "380px",
+                    boxShadow:
+                      "0 20px 60px rgba(0, 187, 255, 0.10)",
+                  }}
+                >
+                  <iframe
+                    src={`https://www.tiktok.com/player/v1/${video.id}?controls=1&description=1&music_info=1&rel=0&fullscreen_button=1&progress_bar=1&play_button=1&volume_control=1&timestamp=1`}
+                    title={
+                      video.description ??
+                      "Latest DrakeShi TikTok video"
+                    }
+                    allow="fullscreen"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      border: "none",
+                      display: "block",
+                    }}
+                  />
+                </Column>
+              </Column>
 
               {/* VIDEO INFORMATION */}
 
               <Column
                 flex={1}
+                fillWidth
                 gap="m"
                 vertical="center"
                 paddingY="m"
@@ -297,18 +277,16 @@ export default async function Home() {
                 </Heading>
 
                 <Text
-                  variant="body-default-s"
+                  variant="body-default-m"
                   onBackground="neutral-weak"
+                  wrap="balance"
                 >
                   {[
-                    video.viewCount !==
-                      undefined &&
+                    video.viewCount !== undefined &&
                       `${video.viewCount.toLocaleString()} views`,
-                    video.likeCount !==
-                      undefined &&
+                    video.likeCount !== undefined &&
                       `${video.likeCount.toLocaleString()} likes`,
-                    video.commentCount !==
-                      undefined &&
+                    video.commentCount !== undefined &&
                       `${video.commentCount.toLocaleString()} comments`,
                   ]
                     .filter(Boolean)
@@ -318,6 +296,7 @@ export default async function Home() {
                 <Row
                   gap="12"
                   wrap
+                  marginTop="s"
                 >
                   <Button
                     href={
@@ -413,7 +392,10 @@ export default async function Home() {
             @sheluvsdrak3.
           </Text>
 
-          <Row>
+          <Row
+            gap="12"
+            wrap
+          >
             <Button
               href="/work/featured-tiktok"
               variant="secondary"
@@ -433,6 +415,7 @@ export default async function Home() {
           s={{
             direction: "column",
             gap: "l",
+            vertical: "start",
           }}
         >
           <Column
@@ -514,7 +497,10 @@ export default async function Home() {
               </Text>
             </Column>
 
-            <Row gap="8" wrap>
+            <Row
+              gap="8"
+              wrap
+            >
               <Button
                 href={tiktokUrl}
                 variant="tertiary"
