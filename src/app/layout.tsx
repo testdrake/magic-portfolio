@@ -1,3 +1,4 @@
+
 import "@once-ui-system/core/css/styles.css";
 import "@once-ui-system/core/css/tokens.css";
 import "@/resources/custom.css";
@@ -122,12 +123,13 @@ export default async function RootLayout({
           as="body"
           background="page"
           fillWidth
-          minHeight="100vh"
+          style={{ minHeight: "100vh" }}
           margin="0"
           padding="0"
           horizontal="center"
         >
-          {/* Background */}
+          {/* BACKGROUND */}
+
           <RevealFx fill position="absolute">
             <Background
               mask={{
@@ -171,7 +173,8 @@ export default async function RootLayout({
             />
           </RevealFx>
 
-          {/* Header */}
+          {/* HEADER */}
+
           <Flex
             fillWidth
             horizontal="center"
@@ -189,15 +192,16 @@ export default async function RootLayout({
             </Flex>
           </Flex>
 
-          {/* Main Content */}
+          {/* MAIN CONTENT */}
+
           <Flex
             fillWidth
             flex={1}
             horizontal="center"
-            position="relative"
-            zIndex={1}
             paddingX="l"
             paddingY="xl"
+            position="relative"
+            zIndex={1}
           >
             <Flex
               fillWidth
@@ -209,7 +213,8 @@ export default async function RootLayout({
             </Flex>
           </Flex>
 
-          {/* Footer */}
+          {/* FOOTER */}
+
           <Flex
             fillWidth
             horizontal="center"
