@@ -520,4 +520,4 @@ export const metadata = {
   title: home.title,
   description: home.description,
 };
-```
+
